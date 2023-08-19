@@ -5,9 +5,13 @@ import net.minecraft.block.BaseBlock;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.SandBlock;
 import net.minecraft.block.StoneSlabBlock;
+import net.minecraft.block.WoolBlock;
+import net.minecraft.client.resource.language.TranslationStorage;
+import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.registry.BlockRegistry;
 import net.modificationstation.stationapi.api.registry.Identifier;
+import net.modificationstation.stationapi.mixin.lang.TranslationStorageAccessor;
 import paulevs.mfb.MFB;
 import paulevs.mfb.api.SawAPI;
 import paulevs.vbe.block.VBEFullSlabBlock;
@@ -15,6 +19,7 @@ import paulevs.vbe.block.VBEHalfSlabBlock;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.function.Function;
 
 public class MFBBlocks {
@@ -59,6 +64,8 @@ public class MFBBlocks {
 			if (block == BaseBlock.REDSTONE_ORE_LIT) return;
 			if (block == BaseBlock.FURNACE_LIT) return;
 			if (block == BaseBlock.GRASS) return;
+			if (block == BaseBlock.BEDROCK) return;
+			if (block == BaseBlock.LOCKED_CHEST) return;
 			Identifier id = BlockRegistry.INSTANCE.getId(block);
 			if (id == null) return;
 			blocks.add(new Pair<>(id, block));
@@ -75,6 +82,8 @@ public class MFBBlocks {
 			return n1.compareTo(n2);
 		});
 		
+		Properties translations = ((TranslationStorageAccessor) TranslationStorage.getInstance()).getTranslations();
+		
 		blocks.forEach((pair) -> {
 			Identifier id = pair.getFirst();
 			BaseBlock block = pair.getSecond();
@@ -85,20 +94,32 @@ public class MFBBlocks {
 			if (block == BaseBlock.LEAVES || block == BaseBlock.LOG) maxMeta = 3;
 			
 			if (maxMeta == 0) {
-				VBEHalfSlabBlock halfSlabBlock = new MFBHalfSlabBlock(MFB.id(id.id + "_slab_half"), block, maxMeta);
-				VBEFullSlabBlock fullSlabBlock = new MFBFullSlabBlock(MFB.id(id.id + "_slab_full"), block, maxMeta);
+				Identifier idHalf = MFB.id(id.id + "_slab_half");
+				Identifier idFull = MFB.id(id.id + "_slab_full");
+				VBEHalfSlabBlock halfSlabBlock = new MFBHalfSlabBlock(idHalf, block, maxMeta);
+				VBEFullSlabBlock fullSlabBlock = new MFBFullSlabBlock(idFull, block, maxMeta);
 				halfSlabBlock.setFullBlock(fullSlabBlock);
 				fullSlabBlock.setHalfBlock(halfSlabBlock);
+				String name = translations.getProperty(block.getTranslationKey() + ".name", id.toString()) + " Slab";
+				translations.put("tile." + idHalf + ".name", name);
+				translations.put("tile." + idFull + ".name", name);
 				SLABS.add(halfSlabBlock);
 				SawAPI.addRecipe(new ItemStack(block), new ItemStack(halfSlabBlock, 2));
 				return;
 			}
 			
 			for (byte i = 0; i < maxMeta; i++) {
-				VBEHalfSlabBlock halfSlabBlock = new MFBHalfSlabBlock(MFB.id(id.id + "_slab_half_" + i), block, i);
-				VBEFullSlabBlock fullSlabBlock = new MFBFullSlabBlock(MFB.id(id.id + "_slab_full_" + i), block, i);
+				Identifier idHalf = MFB.id(id.id + "_slab_half_" + i);
+				Identifier idFull = MFB.id(id.id + "_slab_full_" + i);
+				VBEHalfSlabBlock halfSlabBlock = new MFBHalfSlabBlock(idHalf, block, i);
+				VBEFullSlabBlock fullSlabBlock = new MFBFullSlabBlock(idFull, block, i);
 				halfSlabBlock.setFullBlock(fullSlabBlock);
 				fullSlabBlock.setHalfBlock(halfSlabBlock);
+				String name = block.getTranslationKey();
+				if (block instanceof WoolBlock) name += "." + DyeItem.NAMES[WoolBlock.getColor(i)];
+				name = translations.getProperty(name + ".name", id.toString()) + " Slab";
+				translations.put("tile." + idHalf + ".name", name);
+				translations.put("tile." + idFull + ".name", name);
 				SLABS.add(halfSlabBlock);
 				SawAPI.addRecipe(new ItemStack(block), new ItemStack(halfSlabBlock, 2));
 			}

@@ -36,7 +36,6 @@ public class SawScreen extends ContainerScreen {
 		fill(posX, posY, posX + 16, posY + 16, 0xFF373737);
 		
 		if (sawContainer.sound == 0) return;
-		System.out.println(sawContainer.sound);
 		switch (sawContainer.sound) {
 			case 1 -> minecraft.soundHelper.playSound("mfb:saw_normal", 1, 1);
 			case 2 -> minecraft.soundHelper.playSound("mfb:saw_break", 1, 1);

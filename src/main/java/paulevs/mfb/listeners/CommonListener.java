@@ -46,7 +46,6 @@ public class CommonListener {
 	
 	@EventListener
 	public void onRecipesRegister(AfterBlockAndItemRegisterEvent event) {
-		System.out.println("Register recipes");
 		SawAPI.addRecipe(new ItemStack(BaseBlock.WOOD), new ItemStack(BaseBlock.STONE_SLAB, 2, 2));
 		SawAPI.addRecipe(new ItemStack(BaseBlock.WOOD), new ItemStack(BaseBlock.WOODEN_PRESSURE_PLATE));
 		SawAPI.addRecipe(new ItemStack(BaseBlock.WOOD), new ItemStack(BaseBlock.WOOD_STAIRS));

@@ -32,7 +32,6 @@ public class ClientListener {
 			BakedModel model = StationRenderAPI.getBakedModelManager().getBlockModels().getModel(state);
 			Identifier textureID = model.getSprite().getContents().getId();
 			block.texture = blockAtlas.addTexture(textureID).index;
-			System.out.println(block.texture);
 		});
 	}
 }
