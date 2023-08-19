@@ -1,7 +1,7 @@
 <table  align="center">
 	<tbody>
 		<tr>
-			<td width="280px" style="text-align: center;"><img src="https://github.com/paulevsGitch/VanillaBlockEnhancements/blob/main/src/main/resources/assets/vbe/icon.png"/></td>		
+			<td width="280px" style="text-align: center;"><img src="https://github.com/paulevsGitch/MoreFancyBlocks/blob/main/src/main/resources/assets/mfb/icon.png"/></td>		
 			<td>
 				<h2 align="left">More Fancy Blocks</h2>
 				<a href="https://jitpack.io/#paulevsGitch/VanillaBlockEnhancements"><img src="https://jitpack.io/v/paulevsGitch/VanillaBlockEnhancements.svg"></a>
