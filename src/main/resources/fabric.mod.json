@@ -1,0 +1,39 @@
+{
+	"schemaVersion": 1,
+	"id": "mfb",
+	"version": "${version}",
+
+	"name": "More Fancy Blocks",
+	"description": "Additional blocks and shapes for Minecraft beta",
+	"authors": [
+		"paulevs"
+	],
+	"contact": {
+		"homepage": "",
+		"sources": "",
+		"issues": ""
+	},
+
+	"license": "MIT",
+	"icon": "assets/mfb/icon.png",
+
+	"environment": "*",
+	"entrypoints": {
+		"stationapi:event_bus": [
+			"paulevs.mfb.listeners.CommonListener"
+		],
+		"stationapi:event_bus_client": [
+			"paulevs.mfb.listeners.ClientListener"
+		],
+		"bhcreative:event_bus": [
+			"paulevs.mfb.listeners.CreativeTabListener"
+		]
+	},
+
+	"mixins": [],
+	
+	"depends": {
+		"minecraft": "1.0.0-beta.7.3",
+		"stationapi": "*"
+	}
+}

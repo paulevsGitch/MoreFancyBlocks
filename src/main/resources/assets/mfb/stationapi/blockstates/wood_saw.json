@@ -1,0 +1,12 @@
+{
+	"variants": {
+		"empty=false,facing=south": { "model": "mfb:block/wood_saw", "y": 180 },
+		"empty=false,facing=north": { "model": "mfb:block/wood_saw" },
+		"empty=false,facing=west": { "model": "mfb:block/wood_saw", "y": 270 },
+		"empty=false,facing=east": { "model": "mfb:block/wood_saw", "y": 90 },
+		"empty=true,facing=south": { "model": "mfb:block/wood_saw_empty" },
+		"empty=true,facing=north": { "model": "mfb:block/wood_saw_empty" },
+		"empty=true,facing=west": { "model": "mfb:block/wood_saw_empty" },
+		"empty=true,facing=east": { "model": "mfb:block/wood_saw_empty" }
+	}
+}

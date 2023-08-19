@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:block/block",
+	"textures": {
+		"particle": "mfb:block/wood_saw"
+	}
+}
