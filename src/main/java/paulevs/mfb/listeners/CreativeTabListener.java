@@ -11,10 +11,15 @@ import paulevs.mfb.item.MFBItems;
 public class CreativeTabListener {
 	@EventListener
 	public void registerTab(TabRegistryEvent event) {
-		MFB.LOGGER.info("Adding MFB tab");
-		SimpleTab tab = new SimpleTab(MFB.id("creative_tab"), new ItemStack(MFBBlocks.WOOD_SAW));
-		event.register(tab);
-		MFBBlocks.BLOCKS_WITH_ITEMS.forEach(block -> tab.addItem(new ItemStack(block)));
-		MFBItems.ITEMS.forEach(block -> tab.addItem(new ItemStack(block)));
+		MFB.LOGGER.info("Adding MFB tabs");
+		
+		final SimpleTab mainTab = new SimpleTab(MFB.id("main_tab"), new ItemStack(MFBBlocks.WOOD_SAW));
+		event.register(mainTab);
+		MFBItems.ITEMS.forEach(block -> mainTab.addItem(new ItemStack(block)));
+		MFBBlocks.BLOCKS_WITH_ITEMS.forEach(block -> mainTab.addItem(new ItemStack(block)));
+		
+		final SimpleTab slabsTab = new SimpleTab(MFB.id("slabs_tab"), new ItemStack(MFBBlocks.SLABS.get(0)));
+		event.register(slabsTab);
+		MFBBlocks.SLABS.forEach(block -> slabsTab.addItem(new ItemStack(block)));
 	}
 }

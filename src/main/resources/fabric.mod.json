@@ -29,11 +29,12 @@
 			"paulevs.mfb.listeners.CreativeTabListener"
 		]
 	},
-
+	
 	"mixins": [],
 	
 	"depends": {
 		"minecraft": "1.0.0-beta.7.3",
+		"vbe": ">=0.1.4",
 		"stationapi": "*"
 	}
 }

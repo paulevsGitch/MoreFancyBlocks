@@ -1,6 +1,7 @@
 package paulevs.mfb.listeners;
 
 import net.mine_diver.unsafeevents.listener.EventListener;
+import net.mine_diver.unsafeevents.listener.ListenerPriority;
 import net.minecraft.block.BaseBlock;
 import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.event.block.BlockEvent.BeforePlacedByItem;
@@ -17,7 +18,7 @@ import paulevs.mfb.block.SawBlockEntity;
 import paulevs.mfb.item.MFBItems;
 
 public class CommonListener {
-	@EventListener
+	@EventListener(priority = ListenerPriority.LOWEST)
 	public void onBlockRegister(BlockRegistryEvent event) {
 		MFBBlocks.init();
 	}
