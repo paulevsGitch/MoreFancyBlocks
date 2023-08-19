@@ -7,6 +7,7 @@ import paulevs.bhcreative.registry.TabRegistryEvent;
 import paulevs.mfb.MFB;
 import paulevs.mfb.block.MFBBlocks;
 import paulevs.mfb.item.MFBItems;
+import paulevs.mfb.screen.CycleCreativeTab;
 
 public class CreativeTabListener {
 	@EventListener
@@ -18,7 +19,7 @@ public class CreativeTabListener {
 		MFBItems.ITEMS.forEach(block -> mainTab.addItem(new ItemStack(block)));
 		MFBBlocks.BLOCKS_WITH_ITEMS.forEach(block -> mainTab.addItem(new ItemStack(block)));
 		
-		final SimpleTab slabsTab = new SimpleTab(MFB.id("slabs_tab"), new ItemStack(MFBBlocks.SLABS.get(0)));
+		final CycleCreativeTab slabsTab = new CycleCreativeTab(MFB.id("slabs_tab"));
 		event.register(slabsTab);
 		MFBBlocks.SLABS.forEach(block -> slabsTab.addItem(new ItemStack(block)));
 	}
