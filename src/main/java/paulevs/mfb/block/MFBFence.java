@@ -5,30 +5,19 @@ import net.fabricmc.api.Environment;
 import net.minecraft.block.BaseBlock;
 import net.minecraft.level.BlockView;
 import net.modificationstation.stationapi.api.registry.Identifier;
-import paulevs.vbe.block.VBEFullSlabBlock;
+import net.modificationstation.stationapi.api.template.block.TemplateFence;
 
-public class MFBFullSlabBlock extends VBEFullSlabBlock {
+public class MFBFence extends TemplateFence {
 	private final BaseBlock source;
 	private final byte meta;
 	
-	public MFBFullSlabBlock(Identifier id, BaseBlock source, byte meta) {
-		super(id, source);
+	public MFBFence(Identifier id, BaseBlock source, byte meta) {
+		super(id, source.texture);
 		this.source = source;
 		this.meta = meta;
-		setLightOpacity(LIGHT_OPACITY[source.id]);
+		setLightOpacity(Math.min(LIGHT_OPACITY[source.id], LIGHT_OPACITY[this.id]));
 		EMITTANCE[this.id] = EMITTANCE[source.id];
-	}
-	
-	@Override
-	@Environment(value=EnvType.CLIENT)
-	public boolean isSideRendered(BlockView view, int x, int y, int z, int side) {
-		return source.isSideRendered(view, x, y, z, side);
-	}
-	
-	@Override
-	public boolean isFullOpaque() {
-		if (source == null) return true;
-		return source.isFullOpaque();
+		setTranslationKey(id.toString());
 	}
 	
 	@Override

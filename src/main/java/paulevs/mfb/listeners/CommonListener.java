@@ -19,12 +19,14 @@ import paulevs.mfb.item.MFBItems;
 
 public class CommonListener {
 	@EventListener(priority = ListenerPriority.LOWEST)
-	public void onBlockRegister(BlockRegistryEvent event) {
+	public void registerBLocks(BlockRegistryEvent event) {
+		System.out.println("Adding blocks!");
 		MFBBlocks.init();
 	}
 	
 	@EventListener
-	public void onItemRegister(ItemRegistryEvent event) {
+	public void registerItems(ItemRegistryEvent event) {
+		System.out.println("Adding items!");
 		MFBItems.init();
 	}
 	
@@ -44,8 +46,10 @@ public class CommonListener {
 		}
 	}
 	
-	@EventListener
+	@EventListener(priority = ListenerPriority.LOWEST)
 	public void onRecipesRegister(AfterBlockAndItemRegisterEvent event) {
+		SawAPI.loadPromisedRecipes();
+		
 		SawAPI.addRecipe(new ItemStack(BaseBlock.WOOD), new ItemStack(BaseBlock.STONE_SLAB, 2, 2));
 		SawAPI.addRecipe(new ItemStack(BaseBlock.WOOD), new ItemStack(BaseBlock.WOODEN_PRESSURE_PLATE));
 		SawAPI.addRecipe(new ItemStack(BaseBlock.WOOD), new ItemStack(BaseBlock.WOOD_STAIRS));

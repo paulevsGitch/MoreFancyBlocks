@@ -17,10 +17,14 @@ public class CreativeTabListener {
 		final SimpleTab mainTab = new SimpleTab(MFB.id("main_tab"), new ItemStack(MFBBlocks.WOOD_SAW));
 		event.register(mainTab);
 		MFBItems.ITEMS.forEach(block -> mainTab.addItem(new ItemStack(block)));
-		MFBBlocks.BLOCKS_WITH_ITEMS.forEach(block -> mainTab.addItem(new ItemStack(block)));
+		MFBBlocks.BLOCKS_WITH_ITEMS.forEach(block -> mainTab.addItem(new ItemStack(block.asItem())));
 		
 		final CycleCreativeTab slabsTab = new CycleCreativeTab(MFB.id("slabs_tab"));
 		event.register(slabsTab);
-		MFBBlocks.SLABS.forEach(block -> slabsTab.addItem(new ItemStack(block)));
+		MFBBlocks.SLABS.forEach(block -> slabsTab.addItem(new ItemStack(block.asItem())));
+		
+		final CycleCreativeTab fencesTab = new CycleCreativeTab(MFB.id("fences_tab"));
+		event.register(fencesTab);
+		MFBBlocks.FENCES.forEach(block -> fencesTab.addItem(new ItemStack(block.asItem())));
 	}
 }

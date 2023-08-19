@@ -50,16 +50,15 @@ public class MFBHalfSlabBlock extends VBEHalfSlabBlock {
 	
 	@Override
 	public int getTextureForSide(int side) {
-		return source.getTextureForSide(side, this.meta);
+		return source.getTextureForSide(wrapSide(side), this.meta);
 	}
 	
 	@Override
 	public int getTextureForSide(int side, int meta) {
-		return source.getTextureForSide(side, this.meta);
+		return source.getTextureForSide(wrapSide(side), this.meta);
 	}
 	
-	@Override
-	public String getTranslatedName() {
-		return "Slab!";
+	private int wrapSide(int side) {
+		return Math.min(side, 2);
 	}
 }

@@ -108,7 +108,8 @@ public class SawContainer extends BaseContainer {
 			}
 		}
 		else {
-			for (int i = 0; i < variants.size(); i++) {
+			int lastItem = Math.min(24, variants.size());
+			for (int i = 0; i < lastItem; i++) {
 				preview.setItem(i, variants.get(i));
 				previewSlots[i].markDirty();
 			}
