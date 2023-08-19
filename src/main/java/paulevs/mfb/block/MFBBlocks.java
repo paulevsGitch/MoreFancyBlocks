@@ -3,6 +3,8 @@ package paulevs.mfb.block;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.block.BaseBlock;
 import net.minecraft.block.BlockWithEntity;
+import net.minecraft.block.SandBlock;
+import net.minecraft.entity.FallingBlockEntity;
 import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.registry.BlockRegistry;
 import net.modificationstation.stationapi.api.registry.Identifier;
@@ -48,6 +50,7 @@ public class MFBBlocks {
 		BlockRegistry.INSTANCE.forEach(block -> {
 			if (!block.isFullCube()) return;
 			if (block instanceof BlockWithEntity) return;
+			if (block instanceof SandBlock) return;
 			if (BaseBlock.HAS_TILE_ENTITY[block.id]) return;
 			if (block == BaseBlock.LEAVES) return;
 			if (block == BaseBlock.LOG) return;
