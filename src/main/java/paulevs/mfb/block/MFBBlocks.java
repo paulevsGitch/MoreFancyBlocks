@@ -78,14 +78,13 @@ public class MFBBlocks {
 			if (block == BaseBlock.WOOL) maxMeta = 15;
 			if (block == BaseBlock.LEAVES || block == BaseBlock.LOG) maxMeta = 3;
 			
-			System.out.println("Added " + id);
-			
 			if (maxMeta == 0) {
 				VBEHalfSlabBlock halfSlabBlock = new MFBHalfSlabBlock(MFB.id(id.id + "_slab_half"), block, maxMeta);
 				VBEFullSlabBlock fullSlabBlock = new MFBFullSlabBlock(MFB.id(id.id + "_slab_full"), block, maxMeta);
 				halfSlabBlock.setFullBlock(fullSlabBlock);
 				fullSlabBlock.setHalfBlock(halfSlabBlock);
 				SLABS.add(halfSlabBlock);
+				SawAPI.addRecipe(new ItemStack(block), new ItemStack(halfSlabBlock, 2));
 				return;
 			}
 			

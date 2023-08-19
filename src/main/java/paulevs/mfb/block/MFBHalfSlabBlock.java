@@ -18,6 +18,7 @@ public class MFBHalfSlabBlock extends VBEHalfSlabBlock {
 		this.source = source;
 		this.meta = meta;
 		this.setLightOpacity(LIGHT_OPACITY[source.id]);
+		EMITTANCE[this.id] = EMITTANCE[source.id];
 	}
 	
 	@Override
