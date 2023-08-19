@@ -1,12 +1,16 @@
 package paulevs.mfb.listeners;
 
 import net.mine_diver.unsafeevents.listener.EventListener;
+import net.minecraft.block.BaseBlock;
+import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.event.block.BlockEvent.BeforePlacedByItem;
+import net.modificationstation.stationapi.api.event.registry.AfterBlockAndItemRegisterEvent;
 import net.modificationstation.stationapi.api.event.registry.BlockRegistryEvent;
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
 import net.modificationstation.stationapi.api.event.tileentity.TileEntityRegisterEvent;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.util.math.Direction.Axis;
+import paulevs.mfb.api.SawAPI;
 import paulevs.mfb.block.MFBBlocks;
 import paulevs.mfb.block.SawBlock;
 import paulevs.mfb.block.SawBlockEntity;
@@ -37,5 +41,19 @@ public class CommonListener {
 		if (!sawBlock.canPlaceAt(event.world, x, event.y, z)) {
 			event.placeFunction = () -> false;
 		}
+	}
+	
+	@EventListener
+	public void onRecipesRegister(AfterBlockAndItemRegisterEvent event) {
+		System.out.println("Register recipes");
+		SawAPI.addRecipe(new ItemStack(BaseBlock.WOOD), new ItemStack(BaseBlock.STONE_SLAB, 2, 2));
+		SawAPI.addRecipe(new ItemStack(BaseBlock.WOOD), new ItemStack(BaseBlock.WOODEN_PRESSURE_PLATE));
+		SawAPI.addRecipe(new ItemStack(BaseBlock.WOOD), new ItemStack(BaseBlock.WOOD_STAIRS));
+		SawAPI.addRecipe(new ItemStack(BaseBlock.WOOD), new ItemStack(BaseBlock.FENCE));
+		
+		SawAPI.addRecipe(new ItemStack(BaseBlock.LOG), new ItemStack(BaseBlock.WOOD, 6));
+		
+		SawAPI.addRecipe(new ItemStack(BaseBlock.COBBLESTONE), new ItemStack(BaseBlock.STONE_SLAB, 2, 3));
+		SawAPI.addRecipe(new ItemStack(BaseBlock.COBBLESTONE), new ItemStack(BaseBlock.COBBLESTONE_STAIRS));
 	}
 }

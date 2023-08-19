@@ -1,5 +1,9 @@
 package paulevs.mfb.container;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.Minecraft;
 import net.minecraft.container.BaseContainer;
 import net.minecraft.container.slot.Slot;
 import net.minecraft.entity.player.PlayerBase;
@@ -22,6 +26,8 @@ public class SawContainer extends BaseContainer {
 	private List<ItemStack> variants;
 	private ItemStack selectedItem;
 	private ItemStack lastItem;
+	
+	public byte sound;
 	
 	public SawContainer(PlayerInventory inventory, SawBlockEntity entity) {
 		crafting = new SimpleInventory(entity.items, this);
@@ -140,6 +146,7 @@ public class SawContainer extends BaseContainer {
 				getSlot(0).markDirty();
 				getSlot(1).getItem().applyDamage(tries, null);
 				getSlot(1).markDirty();
+				sound = 1;
 			}
 			else if (playerItem.isDamageAndIDIdentical(selectedItem) && playerItem.count + selectedItem.count <= selectedItem.getMaxStackSize()) {
 				int tries = shift ? countTries(playerItem.count, getSlot(0).getItem().count) : 1;
@@ -148,6 +155,7 @@ public class SawContainer extends BaseContainer {
 				getSlot(0).markDirty();
 				getSlot(1).getItem().applyDamage(tries, null);
 				getSlot(1).markDirty();
+				sound = 1;
 			}
 			
 			boolean update = false;
@@ -163,12 +171,14 @@ public class SawContainer extends BaseContainer {
 				getSlot(1).markDirty();
 				getSlot(2).setStack(null);
 				getSlot(2).markDirty();
+				sound = 2;
 				lastItem = null;
 				update = true;
 			}
 			
 			if (update) onContentsChanged(null);
 			
+			playSound();
 			return null;
 		}
 		
@@ -178,6 +188,8 @@ public class SawContainer extends BaseContainer {
 			selectedItem = variants.get(entity.selectedSlot);
 			getSlot(2).setStack(selectedItem.copy());
 			getSlot(2).markDirty();
+			sound = 3;
+			playSound();
 			return null;
 		}
 		
@@ -236,5 +248,22 @@ public class SawContainer extends BaseContainer {
 		ItemStack saw = getSlot(1).getItem();
 		count = Math.min(count, saw.getDurability() - saw.getDamage() + 1);
 		return count;
+	}
+	
+	private void playSound() {
+		if (sound == 0 || FabricLoader.getInstance().getEnvironmentType() != EnvType.CLIENT) return;
+		playClientSound();
+		sound = 0;
+	}
+	
+	@Environment(EnvType.CLIENT)
+	private void playClientSound() {
+		@SuppressWarnings("deprecation")
+		Minecraft minecraft = (Minecraft) FabricLoader.getInstance().getGameInstance();
+		switch (sound) {
+			case 1 -> minecraft.soundHelper.playSound("mfb:saw_normal", 1, 1);
+			case 2 -> minecraft.soundHelper.playSound("mfb:saw_break", 1, 1);
+			case 3 -> minecraft.soundHelper.playSound("random.click", 1, 1);
+		}
 	}
 }

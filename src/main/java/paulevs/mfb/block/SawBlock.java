@@ -5,7 +5,9 @@ import net.fabricmc.api.Environment;
 import net.minecraft.block.BaseBlock;
 import net.minecraft.block.entity.BaseBlockEntity;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BeforeBlockRemoved;
@@ -98,15 +100,32 @@ public class SawBlock extends TemplateBlockWithEntity implements BeforeBlockRemo
 	public void beforeBlockRemoved(Level level, int x, int y, int z) {
 		BlockState state = level.getBlockState(x, y, z);
 		boolean empty = state.get(MFBBlockProperties.EMPTY);
+		if (!empty) {
+			dropContent(level, x, y, z);
+		}
 		Direction facing = state.get(MFBBlockProperties.FACING);
 		facing = empty ? facing.rotateClockwise(Axis.Y) : facing.rotateCounterclockwise(Axis.Y);
 		x += facing.getOffsetX();
 		z += facing.getOffsetZ();
+		if (empty) {
+			dropContent(level, x, y, z);
+		}
 		int sectionY = level.getSectionIndex(y);
 		ChunkSection section = ((FlattenedChunk) level.getChunkFromCache(x >> 4, z >> 4)).sections[sectionY];
 		if (section != null && section.getBlockState(x & 15, y & 15, z & 15).isOf(this)) {
 			section.setBlockState(x & 15, y & 15, z & 15, States.AIR.get());
 			level.updateBlock(x, y, z);
+		}
+	}
+	
+	private void dropContent(Level level, int x, int y, int z) {
+		if (level.getBlockEntity(x, y, z) instanceof SawBlockEntity entity) {
+			for (ItemStack stack : entity.items) {
+				if (stack == null || stack.count < 1) continue;
+				level.spawnEntity(new ItemEntity(
+					level, x + 0.5, y + 0.5, z + 0.5, stack
+				));
+			}
 		}
 	}
 	
