@@ -4,6 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BaseBlock;
 import net.minecraft.block.FenceBlock;
+import net.minecraft.block.TorchBlock;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
@@ -11,6 +12,7 @@ import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateFence;
 import net.modificationstation.stationapi.api.util.math.Direction;
+import net.modificationstation.stationapi.api.world.BlockStateView;
 import paulevs.vbe.block.FenceConnector;
 import paulevs.vbe.block.VBEBlockProperties;
 import paulevs.vbe.block.VBEBlockTags;
@@ -19,7 +21,7 @@ import paulevs.vbe.block.VBEHalfSlabBlock;
 import java.util.ArrayList;
 
 public class MFBWallBlock extends TemplateFence implements FenceConnector {
-	private final boolean[] canConnect = new boolean[4];
+	private static final boolean[] CAN_CONNECT = new boolean[4];
 	private final BaseBlock source;
 	private final byte meta;
 	
@@ -78,12 +80,11 @@ public class MFBWallBlock extends TemplateFence implements FenceConnector {
 	
 	@Override
 	public void doesBoxCollide(Level level, int x, int y, int z, Box box, ArrayList list) {
-		byte count = 0;
+		boolean[] connections = getConnections(level, x, y, z);
+		
 		for (byte i = 0; i < 4; i++) {
 			Direction dir = Direction.fromHorizontal(i);
-			BlockState side = level.getBlockState(x + dir.getOffsetX(), y, z + dir.getOffsetZ());
-			canConnect[i] = vbe_canConnect(side, dir);
-			if (canConnect[i]) {
+			if (connections[i]) {
 				float minX = 0.3125F;
 				float minZ = 0.3125F;
 				float maxX = 0.6875F;
@@ -96,11 +97,10 @@ public class MFBWallBlock extends TemplateFence implements FenceConnector {
 				
 				this.setBoundingBox(minX, 0.0F, minZ, maxX, 1.5F, maxZ);
 				super.doesBoxCollide(level, x, y, z, box, list);
-				count++;
 			}
 		}
 		
-		if (count < 2 || count == 3 || (count == 2 && canConnect[0] != canConnect[2])) {
+		if (hasPost(level, x, y, z, connections)) {
 			this.setBoundingBox(0.25F, 0.0F, 0.25F, 0.75F, 1.5F, 0.75F);
 			super.doesBoxCollide(level, x, y, z, box, list);
 		}
@@ -113,21 +113,19 @@ public class MFBWallBlock extends TemplateFence implements FenceConnector {
 		float maxZ = 0.6875F;
 		float maxY = 0.8125F;
 		
-		byte count = 0;
+		boolean[] connections = getConnections(level, x, y, z);
+		
 		for (byte i = 0; i < 4; i++) {
 			Direction dir = Direction.fromHorizontal(i);
-			BlockState side = level.getBlockState(x + dir.getOffsetX(), y, z + dir.getOffsetZ());
-			canConnect[i] = vbe_canConnect(side, dir);
-			if (canConnect[i]) {
+			if (connections[i]) {
 				if (dir.getOffsetX() < 0) minX = 0;
 				if (dir.getOffsetX() > 0) maxX = 1;
 				if (dir.getOffsetZ() < 0) minZ = 0;
 				if (dir.getOffsetZ() > 0) maxZ = 1;
-				count++;
 			}
 		}
 		
-		if (count < 2 || count == 3 || (count == 2 && canConnect[0] != canConnect[2])) {
+		if (hasPost(level, x, y, z, connections)) {
 			maxY = 1;
 			minX = Math.min(minX, 0.25F);
 			minZ = Math.min(minZ, 0.25F);
@@ -146,5 +144,43 @@ public class MFBWallBlock extends TemplateFence implements FenceConnector {
 			return state.get(VBEBlockProperties.DIRECTION).getOpposite() == face;
 		}
 		return block instanceof FenceBlock || (block.isFullOpaque() && block.isFullCube());
+	}
+	
+	public boolean[] getConnections(BlockStateView level, int x, int y, int z) {
+		for (byte i = 0; i < 4; i++) {
+			Direction dir = Direction.fromHorizontal(i);
+			BlockState side = level.getBlockState(x + dir.getOffsetX(), y, z + dir.getOffsetZ());
+			CAN_CONNECT[i] = vbe_canConnect(side, dir);
+			if (CAN_CONNECT[i]) {
+				if (dir.getOffsetX() < 0) minX = 0;
+				if (dir.getOffsetX() > 0) maxX = 1;
+				if (dir.getOffsetZ() < 0) minZ = 0;
+				if (dir.getOffsetZ() > 0) maxZ = 1;
+			}
+		}
+		return CAN_CONNECT;
+	}
+	
+	public boolean hasPost(BlockStateView level, int x, int y, int z, boolean[] connections) {
+		if (postByConnections(connections)) return true;
+		while (true) {
+			BaseBlock block = level.getBlockState(x, ++y, z).getBlock();
+			if (block instanceof TorchBlock) return true;
+			if (block instanceof MFBWallBlock wallBlock) {
+				connections = wallBlock.getConnections(level, x, y, z);
+				if (postByConnections(connections)) return true;
+				continue;
+			}
+			break;
+		}
+		return false;
+	}
+	
+	private boolean postByConnections(boolean[] connections) {
+		byte count = 0;
+		for (byte i = 0; i < 4; i++) {
+			if (connections[i]) count++;
+		}
+		return count != 2 || connections[0] != connections[2];
 	}
 }

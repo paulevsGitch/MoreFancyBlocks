@@ -31,7 +31,8 @@
 	},
 	
 	"mixins": [
-		"mfb.mixins.client.json"
+		"mfb.mixins.client.json",
+		"mfb.mixins.common.json"
 	],
 	
 	"depends": {

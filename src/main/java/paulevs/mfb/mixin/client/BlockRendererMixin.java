@@ -19,8 +19,6 @@ import paulevs.mfb.block.MFBWallBlock;
 
 @Mixin(BlockRenderer.class)
 public abstract class BlockRendererMixin {
-	@Unique private final boolean[] mfb_canConnect = new boolean[4];
-	
 	@Shadow public boolean itemColorEnabled;
 	@Shadow private BlockView blockView;
 	
@@ -33,18 +31,17 @@ public abstract class BlockRendererMixin {
 	@Shadow public abstract void renderWestFace(BaseBlock arg, double d, double e, double f, int i);
 	
 	@Inject(method = "renderFence", at = @At("HEAD"), cancellable = true)
-	private void mfb_renderFence(BaseBlock block, int x, int y, int z, CallbackInfoReturnable<Boolean> info) {
+	private void mfb_renderWall(BaseBlock block, int x, int y, int z, CallbackInfoReturnable<Boolean> info) {
 		if (!(block instanceof MFBWallBlock wallBlock)) return;
 		if (!(blockView instanceof BlockStateView blockStateView)) return;
 		
 		float maxY = blockStateView.getBlockState(x, y + 1, z).getBlock() instanceof MFBWallBlock ? 1.0F : 0.8125F;
 		
-		byte count = 0;
+		boolean[] connections = wallBlock.getConnections(blockStateView, x, y, z);
+		
 		for (byte i = 0; i < 4; i++) {
 			Direction dir = Direction.fromHorizontal(i);
-			BlockState side = blockStateView.getBlockState(x + dir.getOffsetX(), y, z + dir.getOffsetZ());
-			mfb_canConnect[i] = wallBlock.vbe_canConnect(side, dir);
-			if (mfb_canConnect[i]) {
+			if (connections[i]) {
 				float minX = 0.3125F;
 				float minZ = 0.3125F;
 				float maxX = 0.6875F;
@@ -57,11 +54,10 @@ public abstract class BlockRendererMixin {
 				
 				wallBlock.setBoundingBox(minX, 0.0F, minZ, maxX, maxY, maxZ);
 				renderFullCube(wallBlock, x, y, z);
-				count++;
 			}
 		}
 		
-		if (count < 2 || count == 3 || (count == 2 && mfb_canConnect[0] != mfb_canConnect[2])) {
+		if (wallBlock.hasPost(blockStateView, x, y, z, connections)) {
 			wallBlock.setBoundingBox(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
 			renderFullCube(wallBlock, x, y, z);
 		}
@@ -70,7 +66,7 @@ public abstract class BlockRendererMixin {
 	}
 	
 	@Inject(method = "renderBlockItem", at = @At("HEAD"), cancellable = true)
-	private void mfb_renderBlockItem(BaseBlock block, int meta, float light, CallbackInfo info) {
+	private void mfb_renderWallItem(BaseBlock block, int meta, float light, CallbackInfo info) {
 		if (!(block instanceof MFBWallBlock)) return;
 		info.cancel();
 		
