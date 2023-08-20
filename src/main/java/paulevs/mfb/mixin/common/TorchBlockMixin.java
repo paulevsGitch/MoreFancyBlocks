@@ -4,7 +4,6 @@ import net.minecraft.block.BaseBlock;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.block.TorchBlock;
 import net.minecraft.level.Level;
-import net.modificationstation.stationapi.api.block.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;

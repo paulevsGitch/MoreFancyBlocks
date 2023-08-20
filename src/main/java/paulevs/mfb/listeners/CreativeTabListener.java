@@ -16,8 +16,8 @@ public class CreativeTabListener {
 		
 		final SimpleTab mainTab = new SimpleTab(MFB.id("main_tab"), new ItemStack(MFBBlocks.WOOD_SAW));
 		event.register(mainTab);
-		MFBItems.ITEMS.forEach(block -> mainTab.addItem(new ItemStack(block)));
 		MFBBlocks.BLOCKS_WITH_ITEMS.forEach(block -> mainTab.addItem(new ItemStack(block.asItem())));
+		MFBItems.ITEMS.forEach(block -> mainTab.addItem(new ItemStack(block)));
 		
 		final CycleCreativeTab stairsTab = new CycleCreativeTab(MFB.id("stairs_tab"));
 		event.register(stairsTab);

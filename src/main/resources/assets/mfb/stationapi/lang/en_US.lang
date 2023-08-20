@@ -1,0 +1,12 @@
+tab.main_tab.name=More Fancy Blocks
+tab.stairs_tab.name=MFB Stairs
+tab.slabs_tab.name=MFB Slabs
+tab.panels_tab.name=MFB Panels
+tab.fences_tab.name=MFB Fences
+tab.walls_tab.name=MFB Walls
+
+tile.wood_saw.name=Wood Saw
+
+item.stone_saw_blade.name=Stone Saw Blade
+item.iron_saw_blade.name=Iron Saw Blade
+item.diamond_saw_blade.name=Diamond Saw Blade

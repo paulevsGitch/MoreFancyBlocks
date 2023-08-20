@@ -16,6 +16,7 @@ public class MFBStairsBlock extends TemplateStairs {
 		setSounds(source.sounds);
 		this.source = source;
 		this.meta = meta;
+		setTranslationKey(id.toString());
 	}
 	
 	@Override

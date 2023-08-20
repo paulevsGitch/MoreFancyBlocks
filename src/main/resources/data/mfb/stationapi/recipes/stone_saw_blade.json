@@ -1,0 +1,15 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" S ",
+		"SXS",
+		" S "
+	],
+	"key": {
+		"X": { "item": "minecraft:stick" },
+		"S": { "item": "minecraft:stone" }
+	},
+	"result": {
+		"item": "mfb:stone_saw_blade"
+	}
+}

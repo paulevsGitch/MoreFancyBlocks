@@ -94,6 +94,8 @@ public class MFBBlocks {
 			
 			for (byte meta = 0; meta <= maxMeta; meta++) {
 				String name = block.getTranslationKey();
+				if (block instanceof WoolBlock) name += "." + DyeItem.NAMES[WoolBlock.getColor(meta)];
+				name = translations.getProperty(name + ".name", id.toString());
 				
 				if (block == BaseBlock.WOOD) STAIRS.add(BaseBlock.WOOD_STAIRS);
 				else if (block == BaseBlock.COBBLESTONE) STAIRS.add(BaseBlock.COBBLESTONE_STAIRS);
@@ -120,9 +122,6 @@ public class MFBBlocks {
 					VBEFullSlabBlock fullSlabBlock = new MFBFullSlabBlock(idFull, block, meta);
 					halfSlabBlock.setFullBlock(fullSlabBlock);
 					fullSlabBlock.setHalfBlock(halfSlabBlock);
-					
-					if (block instanceof WoolBlock) name += "." + DyeItem.NAMES[WoolBlock.getColor(meta)];
-					name = translations.getProperty(name + ".name", id.toString());
 					
 					translations.put("tile." + idHalf + ".name", name + " Slab");
 					translations.put("tile." + idFull + ".name", name + " Slab");

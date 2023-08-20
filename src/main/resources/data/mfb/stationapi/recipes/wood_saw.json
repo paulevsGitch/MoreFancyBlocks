@@ -1,0 +1,15 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"SSS",
+		"IWI"
+	],
+	"key": {
+		"S": { "item": "minecraft:stone" },
+		"I": { "item": "minecraft:iron_ingot" },
+		"W": { "item": "minecraft:oak_planks" }
+	},
+	"result": {
+		"item": "mfb:wood_saw"
+	}
+}
