@@ -16,7 +16,6 @@ import net.modificationstation.stationapi.api.util.math.BlockPos;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.world.BlockStateView;
 import paulevs.vbe.block.VBEBlockProperties;
-import paulevs.vbe.block.VBEHalfSlabBlock;
 
 import java.util.ArrayList;
 

@@ -78,8 +78,32 @@ public class MFBWallBlock extends TemplateFence implements FenceConnector {
 	
 	@Override
 	public void doesBoxCollide(Level level, int x, int y, int z, Box box, ArrayList list) {
-		this.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
-		super.doesBoxCollide(level, x, y, z, box, list);
+		byte count = 0;
+		for (byte i = 0; i < 4; i++) {
+			Direction dir = Direction.fromHorizontal(i);
+			BlockState side = level.getBlockState(x + dir.getOffsetX(), y, z + dir.getOffsetZ());
+			canConnect[i] = vbe_canConnect(side, dir);
+			if (canConnect[i]) {
+				float minX = 0.3125F;
+				float minZ = 0.3125F;
+				float maxX = 0.6875F;
+				float maxZ = 0.6875F;
+				
+				if (dir.getOffsetX() < 0) { minX = 0; maxX = 0.5F; }
+				if (dir.getOffsetX() > 0) { maxX = 1; minX = 0.5F; }
+				if (dir.getOffsetZ() < 0) { minZ = 0; maxZ = 0.5F; }
+				if (dir.getOffsetZ() > 0) { maxZ = 1; minZ = 0.5F; }
+				
+				this.setBoundingBox(minX, 0.0F, minZ, maxX, 1.5F, maxZ);
+				super.doesBoxCollide(level, x, y, z, box, list);
+				count++;
+			}
+		}
+		
+		if (count < 2 || count == 3 || (count == 2 && canConnect[0] != canConnect[2])) {
+			this.setBoundingBox(0.25F, 0.0F, 0.25F, 0.75F, 1.5F, 0.75F);
+			super.doesBoxCollide(level, x, y, z, box, list);
+		}
 	}
 	
 	private void updateBox(Level level, int x, int y, int z) {
