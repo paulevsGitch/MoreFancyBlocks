@@ -17,6 +17,7 @@ public class MFBFullSlabBlock extends VBEFullSlabBlock {
 		this.meta = meta;
 		setLightOpacity(LIGHT_OPACITY[source.id]);
 		EMITTANCE[this.id] = EMITTANCE[source.id];
+		setSounds(source.sounds);
 	}
 	
 	@Override

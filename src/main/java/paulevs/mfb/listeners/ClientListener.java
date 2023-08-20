@@ -8,8 +8,11 @@ import net.modificationstation.stationapi.api.client.render.model.BakedModel;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
 import net.modificationstation.stationapi.api.client.texture.atlas.ExpandableAtlas;
 import net.modificationstation.stationapi.api.event.registry.GuiHandlerRegistryEvent;
+import net.modificationstation.stationapi.api.registry.BlockRegistry;
 import net.modificationstation.stationapi.api.registry.Identifier;
+import paulevs.mfb.MFB;
 import paulevs.mfb.block.MFBBlocks;
+import paulevs.mfb.block.MFBFenceBlock;
 import paulevs.mfb.block.SawBlock;
 import paulevs.mfb.container.SawContainer;
 import paulevs.mfb.screen.SawScreen;
@@ -33,5 +36,11 @@ public class ClientListener {
 			Identifier textureID = model.getSprite().getContents().getId();
 			block.texture = blockAtlas.addTexture(textureID).index;
 		});
+		
+		MFBFenceBlock fence = (MFBFenceBlock) BlockRegistry.INSTANCE.get(MFB.id("glass_fence"));
+		if (fence != null) {
+			fence.sideTexture = blockAtlas.addTexture(MFB.id("block/glass_fence_side")).index;
+			fence.topTexture = blockAtlas.addTexture(MFB.id("block/glass_fence_top")).index;
+		}
 	}
 }

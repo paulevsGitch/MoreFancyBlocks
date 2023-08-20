@@ -7,17 +7,22 @@ import net.minecraft.level.BlockView;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateFence;
 
-public class MFBFence extends TemplateFence {
+public class MFBFenceBlock extends TemplateFence {
 	private final BaseBlock source;
 	private final byte meta;
 	
-	public MFBFence(Identifier id, BaseBlock source, byte meta) {
+	public int sideTexture;
+	public int topTexture;
+	
+	public MFBFenceBlock(Identifier id, BaseBlock source, byte meta) {
 		super(id, source.texture);
 		this.source = source;
 		this.meta = meta;
 		setLightOpacity(Math.min(LIGHT_OPACITY[source.id], LIGHT_OPACITY[this.id]));
 		EMITTANCE[this.id] = EMITTANCE[source.id];
 		setTranslationKey(id.toString());
+		setSounds(source.sounds);
+		setHardness(source.getHardness());
 	}
 	
 	@Override
@@ -38,15 +43,12 @@ public class MFBFence extends TemplateFence {
 	
 	@Override
 	public int getTextureForSide(int side) {
-		return source.getTextureForSide(wrapSide(side), this.meta);
+		if (side < 2) return topTexture == 0 ? source.getTextureForSide(side, this.meta) : topTexture;
+		return sideTexture == 0 ? source.getTextureForSide(2, this.meta) : sideTexture;
 	}
 	
 	@Override
 	public int getTextureForSide(int side, int meta) {
-		return source.getTextureForSide(wrapSide(side), this.meta);
-	}
-	
-	private int wrapSide(int side) {
-		return Math.min(side, 2);
+		return getTextureForSide(side);
 	}
 }

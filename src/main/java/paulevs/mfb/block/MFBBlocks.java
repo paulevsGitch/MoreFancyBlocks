@@ -108,7 +108,7 @@ public class MFBBlocks {
 				SawAPI.addRecipe(block, meta, halfSlabBlock, 0, 2);
 				
 				Identifier fenceID = MFB.id(addMeta(id.id + "_fence", meta, useMeta));
-				MFBFence fence = new MFBFence(fenceID, block, meta);
+				MFBFenceBlock fence = new MFBFenceBlock(fenceID, block, meta);
 				translations.put("tile." + fenceID + ".name", name + " Fence");
 				
 				FENCES.add(fence);

@@ -20,13 +20,11 @@ import paulevs.mfb.item.MFBItems;
 public class CommonListener {
 	@EventListener(priority = ListenerPriority.LOWEST)
 	public void registerBLocks(BlockRegistryEvent event) {
-		System.out.println("Adding blocks!");
 		MFBBlocks.init();
 	}
 	
 	@EventListener
 	public void registerItems(ItemRegistryEvent event) {
-		System.out.println("Adding items!");
 		MFBItems.init();
 	}
 	
