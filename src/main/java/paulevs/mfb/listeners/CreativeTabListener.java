@@ -19,12 +19,24 @@ public class CreativeTabListener {
 		MFBItems.ITEMS.forEach(block -> mainTab.addItem(new ItemStack(block)));
 		MFBBlocks.BLOCKS_WITH_ITEMS.forEach(block -> mainTab.addItem(new ItemStack(block.asItem())));
 		
+		final CycleCreativeTab stairsTab = new CycleCreativeTab(MFB.id("stairs_tab"));
+		event.register(stairsTab);
+		MFBBlocks.STAIRS.forEach(block -> stairsTab.addItem(new ItemStack(block.asItem())));
+		
 		final CycleCreativeTab slabsTab = new CycleCreativeTab(MFB.id("slabs_tab"));
 		event.register(slabsTab);
 		MFBBlocks.SLABS.forEach(block -> slabsTab.addItem(new ItemStack(block.asItem())));
 		
+		final CycleCreativeTab panelsTab = new CycleCreativeTab(MFB.id("panels_tab"));
+		event.register(panelsTab);
+		MFBBlocks.PANELS.forEach(block -> panelsTab.addItem(new ItemStack(block.asItem())));
+		
 		final CycleCreativeTab fencesTab = new CycleCreativeTab(MFB.id("fences_tab"));
 		event.register(fencesTab);
 		MFBBlocks.FENCES.forEach(block -> fencesTab.addItem(new ItemStack(block.asItem())));
+		
+		final CycleCreativeTab wallsTab = new CycleCreativeTab(MFB.id("walls_tab"));
+		event.register(wallsTab);
+		MFBBlocks.WALLS.forEach(block -> wallsTab.addItem(new ItemStack(block.asItem())));
 	}
 }

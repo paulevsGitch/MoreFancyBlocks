@@ -13,6 +13,7 @@ import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.mixin.lang.TranslationStorageAccessor;
 import paulevs.mfb.MFB;
 import paulevs.mfb.api.SawAPI;
+import paulevs.vbe.block.VBEBlocks;
 import paulevs.vbe.block.VBEFullSlabBlock;
 import paulevs.vbe.block.VBEHalfSlabBlock;
 
@@ -24,8 +25,11 @@ import java.util.function.Function;
 public class MFBBlocks {
 	public static final List<BaseBlock> BLOCKS_WITH_ITEMS = new ArrayList<>();
 	public static final List<BaseBlock> SOURCE_BLOCKS = new ArrayList<>();
+	public static final List<BaseBlock> STAIRS = new ArrayList<>();
 	public static final List<BaseBlock> SLABS = new ArrayList<>();
+	public static final List<BaseBlock> PANELS = new ArrayList<>();
 	public static final List<BaseBlock> FENCES = new ArrayList<>();
+	public static final List<BaseBlock> WALLS = new ArrayList<>();
 	
 	public static final BaseBlock WOOD_SAW = make("wood_saw", SawBlock::new).setSounds(BaseBlock.WOOD_SOUNDS);
 	// public static final BaseBlock STONE_SAW = make("stone_saw", SawBlock::new).setSounds(BaseBlock.STONE_SOUNDS);
@@ -89,30 +93,67 @@ public class MFBBlocks {
 			boolean useMeta = maxMeta > 0;
 			
 			for (byte meta = 0; meta <= maxMeta; meta++) {
-				Identifier idHalf = MFB.id(addMeta(id.id + "_slab_half", meta, useMeta));
-				Identifier idFull = MFB.id(addMeta(id.id + "_slab_full", meta, useMeta));
-				
-				VBEHalfSlabBlock halfSlabBlock = new MFBHalfSlabBlock(idHalf, block, meta);
-				VBEFullSlabBlock fullSlabBlock = new MFBFullSlabBlock(idFull, block, meta);
-				halfSlabBlock.setFullBlock(fullSlabBlock);
-				fullSlabBlock.setHalfBlock(halfSlabBlock);
-				
 				String name = block.getTranslationKey();
-				if (block instanceof WoolBlock) name += "." + DyeItem.NAMES[WoolBlock.getColor(meta)];
-				name = translations.getProperty(name + ".name", id.toString());
 				
-				translations.put("tile." + idHalf + ".name", name + " Slab");
-				translations.put("tile." + idFull + ".name", name + " Slab");
+				if (block == BaseBlock.WOOD) STAIRS.add(BaseBlock.WOOD_STAIRS);
+				else if (block == BaseBlock.COBBLESTONE) STAIRS.add(BaseBlock.COBBLESTONE_STAIRS);
+				else {
+					Identifier stairsID = MFB.id(addMeta(id.id + "_stairs", meta, useMeta));
+					MFBStairsBlock stairs = new MFBStairsBlock(stairsID, block, meta);
+					translations.put("tile." + stairsID + ".name", name + " Stairs");
+					
+					STAIRS.add(stairs);
+					SawAPI.addRecipe(block, meta, stairs, 0, 1);
+				}
 				
-				SLABS.add(halfSlabBlock);
-				SawAPI.addRecipe(block, meta, halfSlabBlock, 0, 2);
+				if (block == BaseBlock.WOOD) SLABS.add(VBEBlocks.OAK_SLAB_HALF);
+				else if (block == BaseBlock.COBBLESTONE) {
+					SLABS.add(VBEBlocks.COBBLESTONE_SLAB_HALF);
+					SLABS.add(VBEBlocks.STONE_SLAB_HALF);
+				}
+				else if (block == BaseBlock.SANDSTONE) SLABS.add(VBEBlocks.SANDSTONE_SLAB_HALF);
+				else {
+					Identifier idHalf = MFB.id(addMeta(id.id + "_slab_half", meta, useMeta));
+					Identifier idFull = MFB.id(addMeta(id.id + "_slab_full", meta, useMeta));
+					
+					VBEHalfSlabBlock halfSlabBlock = new MFBHalfSlabBlock(idHalf, block, meta);
+					VBEFullSlabBlock fullSlabBlock = new MFBFullSlabBlock(idFull, block, meta);
+					halfSlabBlock.setFullBlock(fullSlabBlock);
+					fullSlabBlock.setHalfBlock(halfSlabBlock);
+					
+					if (block instanceof WoolBlock) name += "." + DyeItem.NAMES[WoolBlock.getColor(meta)];
+					name = translations.getProperty(name + ".name", id.toString());
+					
+					translations.put("tile." + idHalf + ".name", name + " Slab");
+					translations.put("tile." + idFull + ".name", name + " Slab");
+					
+					SLABS.add(halfSlabBlock);
+					SawAPI.addRecipe(block, meta, halfSlabBlock, 0, 2);
+				}
 				
-				Identifier fenceID = MFB.id(addMeta(id.id + "_fence", meta, useMeta));
-				MFBFenceBlock fence = new MFBFenceBlock(fenceID, block, meta);
-				translations.put("tile." + fenceID + ".name", name + " Fence");
+				if (block == BaseBlock.WOOD) FENCES.add(BaseBlock.FENCE);
+				else {
+					Identifier fenceID = MFB.id(addMeta(id.id + "_fence", meta, useMeta));
+					MFBFenceBlock fence = new MFBFenceBlock(fenceID, block, meta);
+					translations.put("tile." + fenceID + ".name", name + " Fence");
+					
+					FENCES.add(fence);
+					SawAPI.addRecipe(block, meta, fence, 0, 1);
+				}
 				
-				FENCES.add(fence);
-				SawAPI.addRecipe(block, meta, fence, 0, 1);
+				Identifier panelID = MFB.id(addMeta(id.id + "_panel", meta, useMeta));
+				MFBPanelBlock panel = new MFBPanelBlock(panelID, block, meta);
+				translations.put("tile." + panelID + ".name", name + " Panel");
+				
+				PANELS.add(panel);
+				SawAPI.addRecipe(block, meta, panel, 0, 4);
+				
+				Identifier wallID = MFB.id(addMeta(id.id + "_wall", meta, useMeta));
+				MFBWallBlock wall = new MFBWallBlock(wallID, block, meta);
+				translations.put("tile." + wallID + ".name", name + " Wall");
+				
+				WALLS.add(wall);
+				SawAPI.addRecipe(block, meta, wall, 0, 1);
 			}
 		});
 	}

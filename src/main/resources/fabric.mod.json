@@ -30,7 +30,9 @@
 		]
 	},
 	
-	"mixins": [],
+	"mixins": [
+		"mfb.mixins.client.json"
+	],
 	
 	"depends": {
 		"minecraft": "1.0.0-beta.7.3",
