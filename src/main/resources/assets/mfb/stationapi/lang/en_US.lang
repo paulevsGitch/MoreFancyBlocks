@@ -4,6 +4,7 @@ tab.slabs_tab.name=MFB Slabs
 tab.panels_tab.name=MFB Panels
 tab.fences_tab.name=MFB Fences
 tab.walls_tab.name=MFB Walls
+tab.octablocks_tab.name=MFB Octablocks
 
 tile.wood_saw.name=Wood Saw
 

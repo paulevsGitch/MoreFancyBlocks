@@ -104,6 +104,8 @@ public class MFBWallBlock extends TemplateFence implements FenceConnector {
 			this.setBoundingBox(0.25F, 0.0F, 0.25F, 0.75F, 1.5F, 0.75F);
 			super.doesBoxCollide(level, x, y, z, box, list);
 		}
+		
+		this.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 	
 	private void updateBox(Level level, int x, int y, int z) {
@@ -164,8 +166,10 @@ public class MFBWallBlock extends TemplateFence implements FenceConnector {
 	public boolean hasPost(BlockStateView level, int x, int y, int z, boolean[] connections) {
 		if (postByConnections(connections)) return true;
 		while (true) {
-			BaseBlock block = level.getBlockState(x, ++y, z).getBlock();
+			BlockState state = level.getBlockState(x, ++y, z);
+			BaseBlock block = state.getBlock();
 			if (block instanceof TorchBlock) return true;
+			if (block instanceof MFBOctablock) return state.get(MFBBlockProperties.OCTABLOCK) == 10;
 			if (block instanceof MFBWallBlock wallBlock) {
 				connections = wallBlock.getConnections(level, x, y, z);
 				if (postByConnections(connections)) return true;

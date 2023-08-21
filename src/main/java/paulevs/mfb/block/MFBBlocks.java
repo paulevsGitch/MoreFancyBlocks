@@ -30,6 +30,7 @@ public class MFBBlocks {
 	public static final List<BaseBlock> PANELS = new ArrayList<>();
 	public static final List<BaseBlock> FENCES = new ArrayList<>();
 	public static final List<BaseBlock> WALLS = new ArrayList<>();
+	public static final List<BaseBlock> OCTABLOCKS = new ArrayList<>();
 	
 	public static final BaseBlock WOOD_SAW = make("wood_saw", SawBlock::new).setSounds(BaseBlock.WOOD_SOUNDS);
 	// public static final BaseBlock STONE_SAW = make("stone_saw", SawBlock::new).setSounds(BaseBlock.STONE_SOUNDS);
@@ -153,6 +154,13 @@ public class MFBBlocks {
 				
 				WALLS.add(wall);
 				SawAPI.addRecipe(block, meta, wall, 0, 1);
+				
+				Identifier octablockID = MFB.id(addMeta(id.id + "_octablock", meta, useMeta));
+				MFBOctablock octablock = new MFBOctablock(octablockID, block, meta);
+				translations.put("tile." + octablockID + ".name", name + " Octablock");
+				
+				OCTABLOCKS.add(octablock);
+				SawAPI.addRecipe(block, meta, octablock, 0, 8);
 			}
 		});
 	}

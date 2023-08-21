@@ -38,5 +38,9 @@ public class CreativeTabListener {
 		final CycleCreativeTab wallsTab = new CycleCreativeTab(MFB.id("walls_tab"));
 		event.register(wallsTab);
 		MFBBlocks.WALLS.forEach(block -> wallsTab.addItem(new ItemStack(block.asItem())));
+		
+		final CycleCreativeTab octablocksTab = new CycleCreativeTab(MFB.id("octablocks_tab"));
+		event.register(octablocksTab);
+		MFBBlocks.OCTABLOCKS.forEach(block -> octablocksTab.addItem(new ItemStack(block.asItem())));
 	}
 }
