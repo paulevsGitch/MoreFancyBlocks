@@ -108,6 +108,13 @@ public class MFBWallBlock extends TemplateFence implements FenceConnector {
 		this.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 	
+	@Override
+	public void updateBoundingBox(BlockView blockView, int x, int y, int z) {
+		if (blockView instanceof Level level) {
+			updateBox(level, x, y, z);
+		}
+	}
+	
 	private void updateBox(Level level, int x, int y, int z) {
 		float minX = 0.3125F;
 		float minZ = 0.3125F;
@@ -134,6 +141,7 @@ public class MFBWallBlock extends TemplateFence implements FenceConnector {
 			maxX = Math.max(maxX, 0.75F);
 			maxZ = Math.max(maxZ, 0.75F);
 		}
+		else if (extendWalls(level, x, y, z)) maxY = 1;
 		
 		setBoundingBox(minX, 0.0F, minZ, maxX, maxY, maxZ);
 	}
@@ -177,6 +185,33 @@ public class MFBWallBlock extends TemplateFence implements FenceConnector {
 			}
 			break;
 		}
+		return false;
+	}
+	
+	public boolean extendWalls(BlockStateView view, int x, int y, int z) {
+		for (byte i = 0; i < 4; i++) {
+			Direction dir = Direction.fromHorizontal(i);
+			BlockState side = view.getBlockState(x + dir.getOffsetX(), y, z + dir.getOffsetZ());
+			BaseBlock block = side.getBlock();
+			if (block instanceof FenceBlock && !(block instanceof MFBWallBlock)) return true;
+		}
+		
+		BlockState state = view.getBlockState(x, y + 1, z);
+		if (state.isAir()) return false;
+		BaseBlock block = state.getBlock();
+		
+		if (block.isFullCube() && block.material.blocksMovement()) return true;
+		if (block instanceof MFBWallBlock) return true;
+		if (block instanceof VBEHalfSlabBlock && state.get(VBEBlockProperties.DIRECTION) == Direction.DOWN) return true;
+		if (block instanceof MFBPanelBlock && state.get(VBEBlockProperties.DIRECTION) == Direction.DOWN) return true;
+		
+		if (view instanceof Level level) {
+			Box shape = block.getCollisionShape(level, x, y + 1, z);
+			if (shape == null) return false;
+			else shape.move(-x, -y - 1, -z);
+			return shape.minY < 0.01F && shape.minX < 0.01F && shape.minZ < 0.01F && shape.maxX > 0.99F && shape.maxZ > 0.99F;
+		}
+		
 		return false;
 	}
 	

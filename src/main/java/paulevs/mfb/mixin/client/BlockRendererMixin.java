@@ -34,9 +34,8 @@ public abstract class BlockRendererMixin {
 		if (!(block instanceof MFBWallBlock wallBlock)) return;
 		if (!(blockView instanceof BlockStateView blockStateView)) return;
 		
-		float maxY = blockStateView.getBlockState(x, y + 1, z).getBlock() instanceof MFBWallBlock ? 1.0F : 0.8125F;
-		
 		boolean[] connections = wallBlock.getConnections(blockStateView, x, y, z);
+		float maxY = wallBlock.extendWalls(blockStateView, x, y, z) ? 1.0F : 0.8125F;
 		
 		for (byte i = 0; i < 4; i++) {
 			Direction dir = Direction.fromHorizontal(i);

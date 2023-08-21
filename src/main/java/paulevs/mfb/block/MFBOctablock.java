@@ -3,7 +3,6 @@ package paulevs.mfb.block;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BaseBlock;
-import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.hit.HitResult;
@@ -15,13 +14,8 @@ import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager.Builder;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
 import net.modificationstation.stationapi.api.util.math.BlockPos;
-import net.modificationstation.stationapi.api.util.math.Direction;
-import net.modificationstation.stationapi.api.util.math.Vec3d;
 import net.modificationstation.stationapi.api.world.BlockStateView;
-import paulevs.vbe.block.VBEBlockProperties;
 import paulevs.vbe.utils.LevelUtil;
-
-import java.util.ArrayList;
 
 public class MFBOctablock extends TemplateBlockBase {
 	private final BaseBlock source;
