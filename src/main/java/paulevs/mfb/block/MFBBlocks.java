@@ -34,6 +34,7 @@ public class MFBBlocks {
 	
 	public static final BaseBlock WOOD_SAW = make("wood_saw", SawBlock::new).setSounds(BaseBlock.WOOD_SOUNDS);
 	// public static final BaseBlock STONE_SAW = make("stone_saw", SawBlock::new).setSounds(BaseBlock.STONE_SOUNDS);
+	public static final BaseBlock DOUBLE_SLAB = makeNI("double_slab", MFBDoubleSlabBlock::new);
 	
 	private static <B extends BaseBlock> B make(String name, Function<Identifier, B> constructor) {
 		B block = makeNI(name, constructor);

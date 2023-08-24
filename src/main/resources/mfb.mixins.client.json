@@ -4,6 +4,7 @@
 	"package": "paulevs.mfb.mixin.client",
 	"compatibilityLevel": "JAVA_17",
 	"client": [
+		"ArsenicBlockRendererMixin",
 		"BlockRendererMixin"
 	],
 	"injectors": {

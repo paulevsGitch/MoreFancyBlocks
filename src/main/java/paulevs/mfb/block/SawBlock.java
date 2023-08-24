@@ -23,6 +23,7 @@ import net.modificationstation.stationapi.api.util.math.Direction.Axis;
 import net.modificationstation.stationapi.impl.level.chunk.ChunkSection;
 import net.modificationstation.stationapi.impl.level.chunk.FlattenedChunk;
 import paulevs.mfb.MFB;
+import paulevs.mfb.block.blockentity.SawBlockEntity;
 import paulevs.mfb.container.SawContainer;
 
 public class SawBlock extends TemplateBlockWithEntity implements BeforeBlockRemoved {

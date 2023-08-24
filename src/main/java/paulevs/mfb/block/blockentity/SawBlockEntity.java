@@ -1,4 +1,4 @@
-package paulevs.mfb.block;
+package paulevs.mfb.block.blockentity;
 
 import net.minecraft.block.entity.BaseBlockEntity;
 import net.minecraft.item.ItemStack;

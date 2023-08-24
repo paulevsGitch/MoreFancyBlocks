@@ -11,7 +11,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.BaseInventory;
 import net.minecraft.item.ItemStack;
 import paulevs.mfb.api.SawAPI;
-import paulevs.mfb.block.SawBlockEntity;
+import paulevs.mfb.block.blockentity.SawBlockEntity;
 import paulevs.mfb.item.SawBladeItem;
 
 import java.util.List;

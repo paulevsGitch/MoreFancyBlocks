@@ -12,9 +12,10 @@ import net.modificationstation.stationapi.api.event.tileentity.TileEntityRegiste
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.util.math.Direction.Axis;
 import paulevs.mfb.api.SawAPI;
+import paulevs.mfb.block.blockentity.DoubleSlabBlockEntity;
 import paulevs.mfb.block.MFBBlocks;
 import paulevs.mfb.block.SawBlock;
-import paulevs.mfb.block.SawBlockEntity;
+import paulevs.mfb.block.blockentity.SawBlockEntity;
 import paulevs.mfb.item.MFBItems;
 
 public class CommonListener {
@@ -31,6 +32,7 @@ public class CommonListener {
 	@EventListener
 	public void onTileEntityRegister(TileEntityRegisterEvent event) {
 		event.register(SawBlockEntity.class, "mfb:saw");
+		event.register(DoubleSlabBlockEntity.class, "mfb:double_slab");
 	}
 	
 	@EventListener

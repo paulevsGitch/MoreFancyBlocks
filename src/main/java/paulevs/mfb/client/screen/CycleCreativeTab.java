@@ -1,4 +1,4 @@
-package paulevs.mfb.screen;
+package paulevs.mfb.client.screen;
 
 import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.registry.Identifier;

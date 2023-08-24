@@ -15,7 +15,7 @@ import paulevs.mfb.block.MFBBlocks;
 import paulevs.mfb.block.MFBFenceBlock;
 import paulevs.mfb.block.SawBlock;
 import paulevs.mfb.container.SawContainer;
-import paulevs.mfb.screen.SawScreen;
+import paulevs.mfb.client.screen.SawScreen;
 import uk.co.benjiweber.expressions.tuple.BiTuple;
 
 public class ClientListener {

@@ -1,4 +1,4 @@
-package paulevs.mfb.screen;
+package paulevs.mfb.client.screen;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
