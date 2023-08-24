@@ -85,7 +85,6 @@ public class MFBOctablock extends TemplateBlockBase {
 		octablock += MathHelper.floor(dy * 2 + 0.5F) * 3;
 		octablock += MathHelper.floor(dz * 2 + 0.5F) * 9;
 		octablock = net.modificationstation.stationapi.api.util.math.MathHelper.clamp(octablock, 0, 26);
-		System.out.println(octablock);
 		return getDefaultState().with(MFBBlockProperties.OCTABLOCK, octablock);
 	}
 	

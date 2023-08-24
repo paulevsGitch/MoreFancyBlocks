@@ -6,8 +6,8 @@ import paulevs.bhcreative.api.SimpleTab;
 import paulevs.bhcreative.registry.TabRegistryEvent;
 import paulevs.mfb.MFB;
 import paulevs.mfb.block.MFBBlocks;
-import paulevs.mfb.item.MFBItems;
 import paulevs.mfb.client.screen.CycleCreativeTab;
+import paulevs.mfb.item.MFBItems;
 
 public class CreativeTabListener {
 	@EventListener

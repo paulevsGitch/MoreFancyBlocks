@@ -1,9 +1,5 @@
 package paulevs.mfb.mixin.common;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.minecraft.block.BaseBlock;
-import net.minecraft.block.FenceBlock;
 import net.minecraft.block.entity.BaseBlockEntity;
 import net.minecraft.level.Level;
 import net.minecraft.level.chunk.Chunk;
@@ -13,8 +9,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import paulevs.mfb.block.MFBDoubleSlabBlock;
-import paulevs.mfb.block.MFBWallBlock;
 import paulevs.mfb.block.blockentity.DoubleSlabBlockEntity;
 
 @Mixin(value = FlattenedChunk.class, remap = false)

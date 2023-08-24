@@ -4,8 +4,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.block.BaseBlock;
 import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.level.BlockView;
-import net.modificationstation.stationapi.api.block.BlockState;
-import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.impl.client.arsenic.renderer.render.ArsenicBlockRenderer;
 import net.modificationstation.stationapi.mixin.arsenic.client.BlockRendererAccessor;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -13,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import paulevs.mfb.block.MFBDoubleSlabBlock;
 import paulevs.mfb.block.WrappedBlockView;
 import paulevs.mfb.block.blockentity.DoubleSlabBlockEntity;
-import paulevs.vbe.block.VBEBlockProperties;
 
 public class CustomBlockRenderer {
 	private static final WrappedBlockView VIEW = new WrappedBlockView();
@@ -32,26 +29,21 @@ public class CustomBlockRenderer {
 		}
 		
 		renderSlab = true;
-		BlockState state;
 		if (entity.bottomSlab != null) {
-			state = entity.bottomSlab.getDefaultState();
-			VIEW.setData(view, x, y, z, state);
+			VIEW.setData(view, x, y, z, entity.bottomSlab);
 			original.setReturnValue(false);
-			renderer.renderWorld(state.getBlock(), x, y, z, original);
+			renderer.renderWorld(entity.bottomSlab.getBlock(), x, y, z, original);
 			if (!original.getReturnValue()) {
-				RENDERER.render(state.getBlock(), x, y, z);
+				RENDERER.render(entity.bottomSlab.getBlock(), x, y, z);
 			}
-			System.out.println("Render bottom " + state + " " + original.getReturnValue());
 		}
 		if (entity.topSlab != null) {
-			state = entity.topSlab.getDefaultState().with(VBEBlockProperties.DIRECTION, Direction.UP);
-			VIEW.setData(view, x, y, z, state);
+			VIEW.setData(view, x, y, z, entity.topSlab);
 			original.setReturnValue(false);
-			renderer.renderWorld(state.getBlock(), x, y, z, original);
+			renderer.renderWorld(entity.topSlab.getBlock(), x, y, z, original);
 			if (!original.getReturnValue()) {
-				RENDERER.render(state.getBlock(), x, y, z);
+				RENDERER.render(entity.topSlab.getBlock(), x, y, z);
 			}
-			System.out.println("Render top " + state + " " + original.getReturnValue());
 		}
 		renderSlab = false;
 		original.setReturnValue(true);

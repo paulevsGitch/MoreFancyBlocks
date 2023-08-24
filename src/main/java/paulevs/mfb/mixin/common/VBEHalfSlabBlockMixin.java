@@ -9,13 +9,16 @@ import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.BlockItem;
 import net.minecraft.level.Level;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.util.math.Direction;
+import net.modificationstation.stationapi.api.util.math.Direction.AxisDirection;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import paulevs.mfb.block.blockentity.DoubleSlabBlockEntity;
 import paulevs.mfb.block.MFBBlocks;
+import paulevs.mfb.block.blockentity.DoubleSlabBlockEntity;
+import paulevs.vbe.block.VBEBlockProperties;
 import paulevs.vbe.block.VBEHalfSlabBlock;
 
 @Mixin(value = VBEHalfSlabBlock.class, remap = false)
@@ -57,9 +60,15 @@ public class VBEHalfSlabBlockMixin {
 		@Local(ordinal = 0) BlockState state, @Local BlockItem item
 	) {
 		if (level.getBlockEntity(x, y, z) instanceof DoubleSlabBlockEntity entity) {
-			entity.bottomSlab = (VBEHalfSlabBlock) state.getBlock();
-			entity.topSlab = (VBEHalfSlabBlock) item.getBlock();
-			System.out.println("Updated entity " + entity);
+			Direction dir = state.get(VBEBlockProperties.DIRECTION);
+			if (dir.getDirection() == AxisDirection.NEGATIVE) {
+				entity.bottomSlab = state;
+				entity.topSlab = item.getBlock().getDefaultState().with(VBEBlockProperties.DIRECTION, dir.getOpposite());
+			}
+			else {
+				entity.topSlab = state;
+				entity.bottomSlab = item.getBlock().getDefaultState().with(VBEBlockProperties.DIRECTION, dir.getOpposite());
+			}
 		}
 	}
 }
