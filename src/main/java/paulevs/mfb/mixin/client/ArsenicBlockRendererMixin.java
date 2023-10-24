@@ -21,9 +21,8 @@ public abstract class ArsenicBlockRendererMixin {
 	
 	@Inject(method = "renderWorld", at = @At("HEAD"), cancellable = true)
 	private void mfb_renderDoubleSlab(BaseBlock block, int x, int y, int z, CallbackInfoReturnable<Boolean> original, CallbackInfo info) {
-		BlockView view = this.blockRendererAccessor.getBlockView();
 		ArsenicBlockRenderer renderer = ArsenicBlockRenderer.class.cast(this);
-		CustomBlockRenderer.mfb_renderDoubleSlab(view, block, x, y, z, renderer, original, info);
+		CustomBlockRenderer.mfb_renderDoubleSlab(blockRendererAccessor, block, x, y, z, renderer, original, info);
 	}
 	
 	@WrapOperation(method = "renderWorld", at = @At(

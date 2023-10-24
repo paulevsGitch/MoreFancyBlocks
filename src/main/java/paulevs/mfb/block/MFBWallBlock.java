@@ -37,6 +37,7 @@ public class MFBWallBlock extends TemplateFence implements FenceConnector {
 		setTranslationKey(id.toString());
 		setSounds(source.sounds);
 		setHardness(source.getHardness());
+		ALLOWS_GRASS_UNDER[this.id] = true;
 	}
 	
 	@Override

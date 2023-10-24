@@ -6,6 +6,7 @@ import net.minecraft.block.BaseBlock;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.maths.BlockPos;
 import net.minecraft.util.maths.Box;
 import net.minecraft.util.maths.MathHelper;
 import net.modificationstation.stationapi.api.block.BlockState;
@@ -13,7 +14,6 @@ import net.modificationstation.stationapi.api.item.ItemPlacementContext;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager.Builder;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
-import net.modificationstation.stationapi.api.util.math.BlockPos;
 import net.modificationstation.stationapi.api.world.BlockStateView;
 import paulevs.vbe.utils.LevelUtil;
 

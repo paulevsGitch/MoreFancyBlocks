@@ -23,6 +23,7 @@ public class MFBFenceBlock extends TemplateFence {
 		setTranslationKey(id.toString());
 		setSounds(source.sounds);
 		setHardness(source.getHardness());
+		ALLOWS_GRASS_UNDER[this.id] = true;
 	}
 	
 	@Override

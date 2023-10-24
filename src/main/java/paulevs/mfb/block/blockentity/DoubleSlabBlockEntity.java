@@ -19,7 +19,7 @@ public class DoubleSlabBlockEntity extends BaseBlockEntity {
 	public void readIdentifyingData(CompoundTag tag) {
 		super.readIdentifyingData(tag);
 		String id = tag.getString("BottomSlab");
-		Axis axis = level.getBlockState(x, y, z).get(VBEBlockProperties.AXIS);
+		Axis axis = Axis.fromName(tag.getString("Axis"));
 		if (id != null) {
 			BaseBlock block = BlockRegistry.INSTANCE.get(Identifier.of(id));
 			if (block != null) {
@@ -52,5 +52,7 @@ public class DoubleSlabBlockEntity extends BaseBlockEntity {
 				tag.put("TopSlab", id.toString());
 			}
 		}
+		Axis axis = level.getBlockState(x, y, z).get(VBEBlockProperties.AXIS);
+		tag.put("Axis", axis.asString());
 	}
 }

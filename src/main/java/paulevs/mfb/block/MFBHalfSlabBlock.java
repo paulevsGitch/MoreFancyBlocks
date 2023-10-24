@@ -20,6 +20,7 @@ public class MFBHalfSlabBlock extends VBEHalfSlabBlock {
 		setLightOpacity(Math.min(LIGHT_OPACITY[source.id], LIGHT_OPACITY[this.id]));
 		EMITTANCE[this.id] = EMITTANCE[source.id];
 		setSounds(source.sounds);
+		ALLOWS_GRASS_UNDER[this.id] = true;
 	}
 	
 	@Override

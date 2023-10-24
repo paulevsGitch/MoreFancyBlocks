@@ -6,11 +6,11 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.SandBlock;
 import net.minecraft.block.StoneSlabBlock;
 import net.minecraft.block.WoolBlock;
-import net.minecraft.client.resource.language.TranslationStorage;
 import net.minecraft.item.DyeItem;
 import net.modificationstation.stationapi.api.registry.BlockRegistry;
 import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.mixin.lang.TranslationStorageAccessor;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Triple;
 import paulevs.mfb.MFB;
 import paulevs.mfb.api.SawAPI;
 import paulevs.vbe.block.VBEBlocks;
@@ -19,7 +19,6 @@ import paulevs.vbe.block.VBEHalfSlabBlock;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.function.Function;
 
 public class MFBBlocks {
@@ -31,6 +30,7 @@ public class MFBBlocks {
 	public static final List<BaseBlock> FENCES = new ArrayList<>();
 	public static final List<BaseBlock> WALLS = new ArrayList<>();
 	public static final List<BaseBlock> OCTABLOCKS = new ArrayList<>();
+	public static final List<Triple<String, String, String>> TRANSLATIONS = new ArrayList<>();
 	
 	public static final BaseBlock WOOD_SAW = make("wood_saw", SawBlock::new).setSounds(BaseBlock.WOOD_SOUNDS);
 	// public static final BaseBlock STONE_SAW = make("stone_saw", SawBlock::new).setSounds(BaseBlock.STONE_SOUNDS);
@@ -82,7 +82,7 @@ public class MFBBlocks {
 			return n1.compareTo(n2);
 		});
 		
-		Properties translations = ((TranslationStorageAccessor) TranslationStorage.getInstance()).getTranslations();
+		//Properties translations = ((TranslationStorageAccessor) TranslationStorage.getInstance()).getTranslations();
 		
 		blocks.forEach((pair) -> {
 			Identifier id = pair.getFirst();
@@ -96,15 +96,16 @@ public class MFBBlocks {
 			
 			for (byte meta = 0; meta <= maxMeta; meta++) {
 				String name = block.getTranslationKey();
+				
 				if (block instanceof WoolBlock) name += "." + DyeItem.NAMES[WoolBlock.getColor(meta)];
-				name = translations.getProperty(name + ".name", id.toString());
+				name = name + ".name";
 				
 				if (block == BaseBlock.WOOD) STAIRS.add(BaseBlock.WOOD_STAIRS);
 				else if (block == BaseBlock.COBBLESTONE) STAIRS.add(BaseBlock.COBBLESTONE_STAIRS);
 				else {
 					Identifier stairsID = MFB.id(addMeta(id.id + "_stairs", meta, useMeta));
 					MFBStairsBlock stairs = new MFBStairsBlock(stairsID, block, meta);
-					translations.put("tile." + stairsID + ".name", name + " Stairs");
+					TRANSLATIONS.add(new ImmutableTriple<>("tile." + stairsID + ".name", name, " Stairs"));
 					
 					STAIRS.add(stairs);
 					SawAPI.addRecipe(block, meta, stairs, 0, 1);
@@ -125,8 +126,8 @@ public class MFBBlocks {
 					halfSlabBlock.setFullBlock(fullSlabBlock);
 					fullSlabBlock.setHalfBlock(halfSlabBlock);
 					
-					translations.put("tile." + idHalf + ".name", name + " Slab");
-					translations.put("tile." + idFull + ".name", name + " Slab");
+					TRANSLATIONS.add(new ImmutableTriple<>("tile." + idHalf + ".name", name, " Slab"));
+					TRANSLATIONS.add(new ImmutableTriple<>("tile." + idFull + ".name", name, " Slab"));
 					
 					SLABS.add(halfSlabBlock);
 					SawAPI.addRecipe(block, meta, halfSlabBlock, 0, 2);
@@ -136,7 +137,7 @@ public class MFBBlocks {
 				else {
 					Identifier fenceID = MFB.id(addMeta(id.id + "_fence", meta, useMeta));
 					MFBFenceBlock fence = new MFBFenceBlock(fenceID, block, meta);
-					translations.put("tile." + fenceID + ".name", name + " Fence");
+					TRANSLATIONS.add(new ImmutableTriple<>("tile." + fenceID + ".name", name, " Fence"));
 					
 					FENCES.add(fence);
 					SawAPI.addRecipe(block, meta, fence, 0, 1);
@@ -144,21 +145,21 @@ public class MFBBlocks {
 				
 				Identifier panelID = MFB.id(addMeta(id.id + "_panel", meta, useMeta));
 				MFBPanelBlock panel = new MFBPanelBlock(panelID, block, meta);
-				translations.put("tile." + panelID + ".name", name + " Panel");
+				TRANSLATIONS.add(new ImmutableTriple<>("tile." + panelID + ".name", name, " Panel"));
 				
 				PANELS.add(panel);
 				SawAPI.addRecipe(block, meta, panel, 0, 4);
 				
 				Identifier wallID = MFB.id(addMeta(id.id + "_wall", meta, useMeta));
 				MFBWallBlock wall = new MFBWallBlock(wallID, block, meta);
-				translations.put("tile." + wallID + ".name", name + " Wall");
+				TRANSLATIONS.add(new ImmutableTriple<>("tile." + wallID + ".name", name, " Wall"));
 				
 				WALLS.add(wall);
 				SawAPI.addRecipe(block, meta, wall, 0, 1);
 				
 				Identifier octablockID = MFB.id(addMeta(id.id + "_octablock", meta, useMeta));
 				MFBOctablock octablock = new MFBOctablock(octablockID, block, meta);
-				translations.put("tile." + octablockID + ".name", name + " Octablock");
+				TRANSLATIONS.add(new ImmutableTriple<>("tile." + octablockID + ".name", name, " Octablock"));
 				
 				OCTABLOCKS.add(octablock);
 				SawAPI.addRecipe(block, meta, octablock, 0, 8);

@@ -6,13 +6,13 @@ import net.minecraft.block.BaseBlock;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
+import net.minecraft.util.maths.BlockPos;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.item.ItemPlacementContext;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager.Builder;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
-import net.modificationstation.stationapi.api.util.math.BlockPos;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.world.BlockStateView;
 import paulevs.vbe.block.VBEBlockProperties;
@@ -31,6 +31,7 @@ public class MFBPanelBlock extends TemplateBlockBase {
 		EMITTANCE[this.id] = EMITTANCE[source.id];
 		setSounds(source.sounds);
 		setTranslationKey(id.toString());
+		ALLOWS_GRASS_UNDER[this.id] = true;
 	}
 	
 	@Override

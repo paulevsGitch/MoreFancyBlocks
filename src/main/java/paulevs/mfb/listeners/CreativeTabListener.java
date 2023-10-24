@@ -2,6 +2,7 @@ package paulevs.mfb.listeners;
 
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.item.ItemStack;
+import paulevs.bhcreative.api.BlockSelectAPI;
 import paulevs.bhcreative.api.SimpleTab;
 import paulevs.bhcreative.registry.TabRegistryEvent;
 import paulevs.mfb.MFB;
@@ -42,5 +43,7 @@ public class CreativeTabListener {
 		final CycleCreativeTab octablocksTab = new CycleCreativeTab(MFB.id("octablocks_tab"));
 		event.register(octablocksTab);
 		MFBBlocks.OCTABLOCKS.forEach(block -> octablocksTab.addItem(new ItemStack(block.asItem())));
+		
+		BlockSelectAPI.registerConverter(MFBBlocks.DOUBLE_SLAB, state -> null);
 	}
 }

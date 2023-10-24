@@ -19,6 +19,7 @@ public class MFBStairsBlock extends TemplateStairs {
 		this.source = source;
 		this.meta = meta;
 		setTranslationKey(id.toString());
+		ALLOWS_GRASS_UNDER[this.id] = true;
 	}
 	
 	@Override
