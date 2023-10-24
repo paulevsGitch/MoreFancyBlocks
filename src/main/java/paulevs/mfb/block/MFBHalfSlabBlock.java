@@ -24,17 +24,6 @@ public class MFBHalfSlabBlock extends VBEHalfSlabBlock {
 	}
 	
 	@Override
-	@Environment(value= EnvType.CLIENT)
-	public boolean isSideRendered(BlockView view, int x, int y, int z, int side) {
-		boolean render = super.isSideRendered(view, x, y, z, side);
-		if (!render && view instanceof BlockStateView blockStateView) {
-			BlockState state = blockStateView.getBlockState(x, y, z);
-			render = !state.isOf(this);
-		}
-		return render;
-	}
-	
-	@Override
 	public int getColorMultiplier(BlockView view, int x, int y, int z) {
 		return source.getColorMultiplier(view, x, y, z);
 	}
