@@ -2,28 +2,28 @@ package paulevs.mfb.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BaseBlock;
-import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.block.Block;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.BlockPos;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.item.ItemPlacementContext;
-import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager.Builder;
-import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
+import net.modificationstation.stationapi.api.template.block.TemplateBlock;
+import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.world.BlockStateView;
 import paulevs.vbe.block.VBEBlockProperties;
 
 import java.util.ArrayList;
 
-public class MFBPanelBlock extends TemplateBlockBase {
-	private final BaseBlock source;
+public class MFBPanelBlock extends TemplateBlock {
+	private final Block source;
 	private final byte meta;
 	
-	public MFBPanelBlock(Identifier id, BaseBlock source, byte meta) {
+	public MFBPanelBlock(Identifier id, Block source, byte meta) {
 		super(id, source.material);
 		this.source = source;
 		this.meta = meta;
@@ -31,11 +31,11 @@ public class MFBPanelBlock extends TemplateBlockBase {
 		EMITTANCE[this.id] = EMITTANCE[source.id];
 		setSounds(source.sounds);
 		setTranslationKey(id.toString());
-		ALLOWS_GRASS_UNDER[this.id] = true;
+		NO_AMBIENT_OCCLUSION[this.id] = true;
 	}
 	
 	@Override
-	public void appendProperties(Builder<BaseBlock, BlockState> builder) {
+	public void appendProperties(Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
 		builder.add(VBEBlockProperties.DIRECTION);
 	}
@@ -78,13 +78,13 @@ public class MFBPanelBlock extends TemplateBlockBase {
 	}
 	
 	@Override
-	public int getTextureForSide(int side) {
-		return source.getTextureForSide(wrapSide(side), this.meta);
+	public int getTexture(int side) {
+		return source.getTexture(wrapSide(side), this.meta);
 	}
 	
 	@Override
-	public int getTextureForSide(int side, int meta) {
-		return source.getTextureForSide(wrapSide(side), this.meta);
+	public int getTexture(int side, int meta) {
+		return source.getTexture(wrapSide(side), this.meta);
 	}
 	
 	// Item Bounding Box
@@ -103,7 +103,7 @@ public class MFBPanelBlock extends TemplateBlockBase {
 		if (state.getProperties().contains(VBEBlockProperties.DIRECTION)) {
 			Direction facing = state.get(VBEBlockProperties.DIRECTION);
 			if (facing.getAxis() != face.getAxis()) {
-				PlayerBase player = context.getPlayer();
+				PlayerEntity player = context.getPlayer();
 				if (player != null && !player.isChild()) {
 					return getDefaultState().with(VBEBlockProperties.DIRECTION, facing);
 				}

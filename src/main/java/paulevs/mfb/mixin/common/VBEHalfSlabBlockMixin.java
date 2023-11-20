@@ -4,8 +4,8 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.block.BaseBlock;
-import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.block.Block;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.level.Level;
 import net.modificationstation.stationapi.api.block.BlockState;
@@ -25,16 +25,16 @@ import paulevs.vbe.block.VBEHalfSlabBlock;
 public class VBEHalfSlabBlockMixin {
 	@WrapOperation(method = "canUse", at = @At(
 		value = "INVOKE",
-		target = "Lnet/minecraft/item/BlockItem;getBlock()Lnet/minecraft/block/BaseBlock;"
+		target = "Lnet/minecraft/item/BlockItem;getBlock()Lnet/minecraft/block/Block;"
 	))
-	private BaseBlock mfb_getItemBLock(BlockItem item, Operation<BaseBlock> original) {
-		BaseBlock block = item.getBlock();
+	private Block mfb_getItemBLock(BlockItem item, Operation<Block> original) {
+		Block block = item.getBlock();
 		return block instanceof VBEHalfSlabBlock ? VBEHalfSlabBlock.class.cast(this) : block;
 	}
 	
 	@ModifyExpressionValue(method = "canUse", at = @At(
 		value = "INVOKE",
-		target = "Lnet/modificationstation/stationapi/api/block/BlockState;isOf(Lnet/minecraft/block/BaseBlock;)Z"
+		target = "Lnet/modificationstation/stationapi/api/block/BlockState;isOf(Lnet/minecraft/block/Block;)Z"
 	))
 	private boolean mfb_canUse(boolean original, @Local BlockState state) {
 		return state.getBlock() instanceof VBEHalfSlabBlock;
@@ -42,9 +42,9 @@ public class VBEHalfSlabBlockMixin {
 	
 	@WrapOperation(method = "canUse", at = @At(
 		value = "INVOKE",
-		target = "Lnet/minecraft/block/BaseBlock;getDefaultState()Lnet/modificationstation/stationapi/api/block/BlockState;"
+		target = "Lnet/minecraft/block/Block;getDefaultState()Lnet/modificationstation/stationapi/api/block/BlockState;"
 	))
-	private BlockState mfb_getDefaultState(BaseBlock block, Operation<BlockState> original, @Local(ordinal = 0) BlockState state, @Local BlockItem item) {
+	private BlockState mfb_getDefaultState(Block block, Operation<BlockState> original, @Local(ordinal = 0) BlockState state, @Local BlockItem item) {
 		if (state.getBlock() == item.getBlock()) return original.call(block);
 		return MFBBlocks.DOUBLE_SLAB.getDefaultState();
 	}
@@ -56,7 +56,7 @@ public class VBEHalfSlabBlockMixin {
 		shift = Shift.BEFORE
 	))
 	private void mfb_updateBlockEntity(
-		Level level, int x, int y, int z, PlayerBase player, CallbackInfoReturnable<Boolean> info,
+		Level level, int x, int y, int z, PlayerEntity player, CallbackInfoReturnable<Boolean> info,
 		@Local(ordinal = 0) BlockState state, @Local BlockItem item
 	) {
 		if (level.getBlockEntity(x, y, z) instanceof DoubleSlabBlockEntity entity) {

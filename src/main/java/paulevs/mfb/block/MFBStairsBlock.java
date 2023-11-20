@@ -2,16 +2,16 @@ package paulevs.mfb.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.level.BlockView;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.block.TemplateStairs;
+import net.modificationstation.stationapi.api.template.block.TemplateStairsBlock;
+import net.modificationstation.stationapi.api.util.Identifier;
 
-public class MFBStairsBlock extends TemplateStairs {
-	private final BaseBlock source;
+public class MFBStairsBlock extends TemplateStairsBlock {
+	private final Block source;
 	private final byte meta;
 	
-	public MFBStairsBlock(Identifier id, BaseBlock source, byte meta) {
+	public MFBStairsBlock(Identifier id, Block source, byte meta) {
 		super(id, source);
 		setLightOpacity(LIGHT_OPACITY[source.id]);
 		EMITTANCE[this.id] = EMITTANCE[source.id];
@@ -19,22 +19,22 @@ public class MFBStairsBlock extends TemplateStairs {
 		this.source = source;
 		this.meta = meta;
 		setTranslationKey(id.toString());
-		ALLOWS_GRASS_UNDER[this.id] = true;
+		NO_AMBIENT_OCCLUSION[this.id] = true;
 	}
 	
 	@Override
-	public int getTextureForSide(BlockView view, int x, int y, int z, int side) {
-		return getTextureForSide(side);
+	public int getTexture(BlockView view, int x, int y, int z, int side) {
+		return getTexture(side);
 	}
 	
 	@Override
-	public int getTextureForSide(int side, int meta) {
-		return getTextureForSide(side);
+	public int getTexture(int side, int meta) {
+		return getTexture(side);
 	}
 	
 	@Override
-	public int getTextureForSide(int side) {
-		return source.getTextureForSide(wrapSide(side), this.meta);
+	public int getTexture(int side) {
+		return source.getTexture(wrapSide(side), this.meta);
 	}
 	
 	@Override

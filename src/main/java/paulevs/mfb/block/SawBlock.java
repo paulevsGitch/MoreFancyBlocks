@@ -2,11 +2,11 @@ package paulevs.mfb.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BaseBlock;
-import net.minecraft.block.entity.BaseBlockEntity;
+import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.living.player.PlayerEntity;
+import net.minecraft.entity.technical.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
@@ -15,13 +15,13 @@ import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.block.States;
 import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
 import net.modificationstation.stationapi.api.item.ItemPlacementContext;
-import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager.Builder;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
+import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.util.math.Direction.Axis;
-import net.modificationstation.stationapi.impl.level.chunk.ChunkSection;
-import net.modificationstation.stationapi.impl.level.chunk.FlattenedChunk;
+import net.modificationstation.stationapi.impl.world.chunk.ChunkSection;
+import net.modificationstation.stationapi.impl.world.chunk.FlattenedChunk;
 import paulevs.mfb.MFB;
 import paulevs.mfb.block.blockentity.SawBlockEntity;
 import paulevs.mfb.container.SawContainer;
@@ -38,7 +38,7 @@ public class SawBlock extends TemplateBlockWithEntity implements BeforeBlockRemo
 	}
 	
 	@Override
-	public void appendProperties(Builder<BaseBlock, BlockState> builder) {
+	public void appendProperties(Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
 		builder.add(MFBBlockProperties.FACING, MFBBlockProperties.EMPTY);
 	}
@@ -93,7 +93,7 @@ public class SawBlock extends TemplateBlockWithEntity implements BeforeBlockRemo
 	}
 	
 	@Override
-	protected BaseBlockEntity createBlockEntity() {
+	protected BlockEntity createBlockEntity() {
 		return new SawBlockEntity();
 	}
 	
@@ -123,22 +123,20 @@ public class SawBlock extends TemplateBlockWithEntity implements BeforeBlockRemo
 		if (level.getBlockEntity(x, y, z) instanceof SawBlockEntity entity) {
 			for (ItemStack stack : entity.items) {
 				if (stack == null || stack.count < 1) continue;
-				level.spawnEntity(new ItemEntity(
-					level, x + 0.5, y + 0.5, z + 0.5, stack
-				));
+				level.spawnEntity(new ItemEntity(level, x + 0.5, y + 0.5, z + 0.5, stack));
 			}
 		}
 	}
 	
 	@Override
-	public boolean canUse(Level level, int x, int y, int z, PlayerBase player) {
+	public boolean canUse(Level level, int x, int y, int z, PlayerEntity player) {
 		BlockState state = level.getBlockState(x, y, z);
 		if (state.get(MFBBlockProperties.EMPTY)) {
 			Direction facing = state.get(MFBBlockProperties.FACING).rotateClockwise(Axis.Y);
 			x += facing.getOffsetX();
 			z += facing.getOffsetZ();
 		}
-		BaseBlockEntity entity = level.getBlockEntity(x, y, z);
+		BlockEntity entity = level.getBlockEntity(x, y, z);
 		if (entity instanceof SawBlockEntity sawBlockEntity) {
 			currentEntity = sawBlockEntity;
 			GuiHelper.openGUI(player, GUI_ID, null, new SawContainer(player.inventory, sawBlockEntity));

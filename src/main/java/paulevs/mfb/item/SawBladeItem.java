@@ -1,9 +1,9 @@
 package paulevs.mfb.item;
 
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
+import net.modificationstation.stationapi.api.template.item.TemplateItem;
+import net.modificationstation.stationapi.api.util.Identifier;
 
-public class SawBladeItem extends TemplateItemBase {
+public class SawBladeItem extends TemplateItem {
 	public SawBladeItem(Identifier id, int durability) {
 		super(id);
 		setMaxStackSize(1);

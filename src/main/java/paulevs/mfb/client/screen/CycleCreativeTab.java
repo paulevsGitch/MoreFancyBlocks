@@ -1,7 +1,7 @@
 package paulevs.mfb.client.screen;
 
 import net.minecraft.item.ItemStack;
-import net.modificationstation.stationapi.api.registry.Identifier;
+import net.modificationstation.stationapi.api.util.Identifier;
 import paulevs.bhcreative.api.CreativeTab;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package paulevs.mfb.api;
 
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class SawAPI {
 	/**
 	 * Add recipe for future adding. Should be called instead of addRecipe when block was just added
 	 */
-	public static void addRecipe(BaseBlock source, int sourceMeta, BaseBlock result, int resultMeta, int count) {
+	public static void addRecipe(Block source, int sourceMeta, Block result, int resultMeta, int count) {
 		futureRecipes.add(new RecipePromise(source, sourceMeta, result, resultMeta, count));
 	}
 	
@@ -55,5 +55,5 @@ public class SawAPI {
 		}).findFirst().map(Pair::getSecond).orElse(null);
 	}
 	
-	private record RecipePromise(BaseBlock source, int sourceMeta, BaseBlock result, int resultMeta, int count) {}
+	private record RecipePromise(Block source, int sourceMeta, Block result, int resultMeta, int count) {}
 }

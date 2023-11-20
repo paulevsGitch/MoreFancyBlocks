@@ -1,20 +1,20 @@
 package paulevs.mfb.container;
 
-import net.minecraft.container.BaseContainer;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.inventory.BaseInventory;
+import net.minecraft.container.Container;
+import net.minecraft.entity.living.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 
-public class SimpleInventory implements BaseInventory {
-	private final BaseContainer container;
+public class SimpleInventory implements Inventory {
+	private final Container container;
 	private final ItemStack[] items;
 	
-	public SimpleInventory(ItemStack[] items, BaseContainer container) {
+	public SimpleInventory(ItemStack[] items, Container container) {
 		this.container = container;
 		this.items = items;
 	}
 	
-	public SimpleInventory(int size, BaseContainer container) {
+	public SimpleInventory(int size, Container container) {
 		this(new ItemStack[size], container);
 	}
 	
@@ -67,7 +67,7 @@ public class SimpleInventory implements BaseInventory {
 	public void markDirty() {}
 	
 	@Override
-	public boolean canPlayerUse(PlayerBase arg) {
+	public boolean canPlayerUse(PlayerEntity arg) {
 		return true;
 	}
 }

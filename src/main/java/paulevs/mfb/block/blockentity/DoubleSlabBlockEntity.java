@@ -1,17 +1,17 @@
 package paulevs.mfb.block.blockentity;
 
-import net.minecraft.block.BaseBlock;
-import net.minecraft.block.entity.BaseBlockEntity;
+import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.io.CompoundTag;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.registry.BlockRegistry;
-import net.modificationstation.stationapi.api.registry.Identifier;
+import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.util.math.Direction.Axis;
 import net.modificationstation.stationapi.api.util.math.Direction.AxisDirection;
 import paulevs.vbe.block.VBEBlockProperties;
 
-public class DoubleSlabBlockEntity extends BaseBlockEntity {
+public class DoubleSlabBlockEntity extends BlockEntity {
 	public BlockState bottomSlab;
 	public BlockState topSlab;
 	
@@ -21,7 +21,7 @@ public class DoubleSlabBlockEntity extends BaseBlockEntity {
 		String id = tag.getString("BottomSlab");
 		Axis axis = Axis.fromName(tag.getString("Axis"));
 		if (id != null) {
-			BaseBlock block = BlockRegistry.INSTANCE.get(Identifier.of(id));
+			Block block = BlockRegistry.INSTANCE.get(Identifier.of(id));
 			if (block != null) {
 				Direction dir = Direction.from(axis, AxisDirection.NEGATIVE);
 				bottomSlab = block.getDefaultState().with(VBEBlockProperties.DIRECTION, dir);
@@ -29,7 +29,7 @@ public class DoubleSlabBlockEntity extends BaseBlockEntity {
 		}
 		id = tag.getString("TopSlab");
 		if (id != null) {
-			BaseBlock block = BlockRegistry.INSTANCE.get(Identifier.of(id));
+			Block block = BlockRegistry.INSTANCE.get(Identifier.of(id));
 			if (block != null) {
 				Direction dir = Direction.from(axis, AxisDirection.POSITIVE);
 				topSlab = block.getDefaultState().with(VBEBlockProperties.DIRECTION, dir);

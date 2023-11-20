@@ -1,6 +1,6 @@
 package paulevs.mfb.mixin.client;
 
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.level.BlockView;
@@ -21,16 +21,16 @@ public abstract class BlockRendererMixin {
 	@Shadow public boolean itemColorEnabled;
 	@Shadow private BlockView blockView;
 	
-	@Shadow public abstract boolean renderFullCube(BaseBlock block, int x, int y, int z);
-	@Shadow public abstract void renderBottomFace(BaseBlock arg, double d, double e, double f, int i);
-	@Shadow public abstract void renderTopFace(BaseBlock arg, double d, double e, double f, int i);
-	@Shadow public abstract void renderNorthFace(BaseBlock arg, double d, double e, double f, int i);
-	@Shadow public abstract void renderSouthFace(BaseBlock arg, double d, double e, double f, int i);
-	@Shadow public abstract void renderEastFace(BaseBlock arg, double d, double e, double f, int i);
-	@Shadow public abstract void renderWestFace(BaseBlock arg, double d, double e, double f, int i);
+	@Shadow public abstract boolean renderFullCube(Block block, int x, int y, int z);
+	@Shadow public abstract void renderBottomFace(Block arg, double d, double e, double f, int i);
+	@Shadow public abstract void renderTopFace(Block arg, double d, double e, double f, int i);
+	@Shadow public abstract void renderNorthFace(Block arg, double d, double e, double f, int i);
+	@Shadow public abstract void renderSouthFace(Block arg, double d, double e, double f, int i);
+	@Shadow public abstract void renderEastFace(Block arg, double d, double e, double f, int i);
+	@Shadow public abstract void renderWestFace(Block arg, double d, double e, double f, int i);
 	
 	@Inject(method = "renderFence", at = @At("HEAD"), cancellable = true)
-	private void mfb_renderWall(BaseBlock block, int x, int y, int z, CallbackInfoReturnable<Boolean> info) {
+	private void mfb_renderWall(Block block, int x, int y, int z, CallbackInfoReturnable<Boolean> info) {
 		if (!(block instanceof MFBWallBlock wallBlock)) return;
 		if (!(blockView instanceof BlockStateView blockStateView)) return;
 		
@@ -64,7 +64,7 @@ public abstract class BlockRendererMixin {
 	}
 	
 	@Inject(method = "renderBlockItem", at = @At("HEAD"), cancellable = true)
-	private void mfb_renderWallItem(BaseBlock block, int meta, float light, CallbackInfo info) {
+	private void mfb_renderWallItem(Block block, int meta, float light, CallbackInfo info) {
 		if (!(block instanceof MFBWallBlock)) return;
 		info.cancel();
 		
@@ -91,20 +91,20 @@ public abstract class BlockRendererMixin {
 	}
 	
 	@Unique
-	private void mfb_renderBox(BaseBlock block, int meta, float x1, float y1, float z1, float x2, float y2, float z2) {
+	private void mfb_renderBox(Block block, int meta, float x1, float y1, float z1, float x2, float y2, float z2) {
 		Tessellator tessellator = Tessellator.INSTANCE;
 		block.setBoundingBox(x1, y1, z1, x2, y2, z2);
 		tessellator.setNormal(0.0F, -1.0F, 0.0F);
-		renderBottomFace(block, 0, 0, 0, block.getTextureForSide(0, meta));
+		renderBottomFace(block, 0, 0, 0, block.getTexture(0, meta));
 		tessellator.setNormal(0.0F, 1.0F, 0.0F);
-		renderTopFace(block, 0, 0, 0, block.getTextureForSide(1, meta));
+		renderTopFace(block, 0, 0, 0, block.getTexture(1, meta));
 		tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-		renderNorthFace(block, 0, 0, 0, block.getTextureForSide(4, meta));
+		renderNorthFace(block, 0, 0, 0, block.getTexture(4, meta));
 		tessellator.setNormal(1.0F, 0.0F, 0.0F);
-		renderSouthFace(block, 0, 0, 0, block.getTextureForSide(5, meta));
+		renderSouthFace(block, 0, 0, 0, block.getTexture(5, meta));
 		tessellator.setNormal(0.0F, 0.0F, -1.0F);
-		renderEastFace(block, 0, 0, 0, block.getTextureForSide(2, meta));
+		renderEastFace(block, 0, 0, 0, block.getTexture(2, meta));
 		tessellator.setNormal(0.0F, 0.0F, 1.0F);
-		renderWestFace(block, 0, 0, 0, block.getTextureForSide(3, meta));
+		renderWestFace(block, 0, 0, 0, block.getTexture(3, meta));
 	}
 }

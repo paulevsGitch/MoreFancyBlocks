@@ -2,15 +2,15 @@ package paulevs.mfb.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.block.TorchBlock;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.block.TemplateFence;
+import net.modificationstation.stationapi.api.template.block.TemplateFenceBlock;
+import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.world.BlockStateView;
 import paulevs.vbe.block.FenceConnector;
@@ -20,15 +20,15 @@ import paulevs.vbe.block.VBEHalfSlabBlock;
 
 import java.util.ArrayList;
 
-public class MFBWallBlock extends TemplateFence implements FenceConnector {
+public class MFBWallBlock extends TemplateFenceBlock implements FenceConnector {
 	private static final boolean[] CAN_CONNECT = new boolean[4];
-	private final BaseBlock source;
+	private final Block source;
 	private final byte meta;
 	
 	public int sideTexture;
 	public int topTexture;
 	
-	public MFBWallBlock(Identifier id, BaseBlock source, byte meta) {
+	public MFBWallBlock(Identifier id, Block source, byte meta) {
 		super(id, source.texture);
 		this.source = source;
 		this.meta = meta;
@@ -37,7 +37,7 @@ public class MFBWallBlock extends TemplateFence implements FenceConnector {
 		setTranslationKey(id.toString());
 		setSounds(source.sounds);
 		setHardness(source.getHardness());
-		ALLOWS_GRASS_UNDER[this.id] = true;
+		NO_AMBIENT_OCCLUSION[this.id] = true;
 	}
 	
 	@Override
@@ -57,14 +57,14 @@ public class MFBWallBlock extends TemplateFence implements FenceConnector {
 	}
 	
 	@Override
-	public int getTextureForSide(int side) {
-		if (side < 2) return topTexture == 0 ? source.getTextureForSide(side, this.meta) : topTexture;
-		return sideTexture == 0 ? source.getTextureForSide(2, this.meta) : sideTexture;
+	public int getTexture(int side) {
+		if (side < 2) return topTexture == 0 ? source.getTexture(side, this.meta) : topTexture;
+		return sideTexture == 0 ? source.getTexture(2, this.meta) : sideTexture;
 	}
 	
 	@Override
-	public int getTextureForSide(int side, int meta) {
-		return getTextureForSide(side);
+	public int getTexture(int side, int meta) {
+		return getTexture(side);
 	}
 	
 	@Override
@@ -150,7 +150,7 @@ public class MFBWallBlock extends TemplateFence implements FenceConnector {
 	@Override
 	public boolean vbe_canConnect(BlockState state, Direction face) {
 		if (state.isIn(VBEBlockTags.FENCE_CONNECT)) return true;
-		BaseBlock block = state.getBlock();
+		Block block = state.getBlock();
 		if (block instanceof VBEHalfSlabBlock) {
 			return state.get(VBEBlockProperties.DIRECTION).getOpposite() == face;
 		}
@@ -176,7 +176,7 @@ public class MFBWallBlock extends TemplateFence implements FenceConnector {
 		if (postByConnections(connections)) return true;
 		while (true) {
 			BlockState state = level.getBlockState(x, ++y, z);
-			BaseBlock block = state.getBlock();
+			Block block = state.getBlock();
 			if (block instanceof TorchBlock) return true;
 			if (block instanceof MFBOctablock) return state.get(MFBBlockProperties.OCTABLOCK) == 10;
 			if (block instanceof MFBWallBlock wallBlock) {
@@ -193,13 +193,13 @@ public class MFBWallBlock extends TemplateFence implements FenceConnector {
 		for (byte i = 0; i < 4; i++) {
 			Direction dir = Direction.fromHorizontal(i);
 			BlockState side = view.getBlockState(x + dir.getOffsetX(), y, z + dir.getOffsetZ());
-			BaseBlock block = side.getBlock();
+			Block block = side.getBlock();
 			if (block instanceof FenceBlock && !(block instanceof MFBWallBlock)) return true;
 		}
 		
 		BlockState state = view.getBlockState(x, y + 1, z);
 		if (state.isAir()) return false;
-		BaseBlock block = state.getBlock();
+		Block block = state.getBlock();
 		
 		if (block.isFullCube() && block.material.blocksMovement()) return true;
 		if (block instanceof MFBWallBlock) return true;

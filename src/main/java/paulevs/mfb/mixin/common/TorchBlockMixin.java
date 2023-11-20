@@ -2,7 +2,7 @@ package paulevs.mfb.mixin.common;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.TorchBlock;
@@ -24,11 +24,11 @@ public class TorchBlockMixin {
 	)
 	private int mfb_torchSupport(Level level, int x, int y, int z, Operation<Integer> original) {
 		BlockState state = level.getBlockState(x, y, z);
-		BaseBlock block = state.getBlock();
-		if (block instanceof MFBWallBlock) return BaseBlock.FENCE.id;
-		if (block instanceof FenceBlock) return BaseBlock.FENCE.id;
-		if (block instanceof VBEHalfSlabBlock && state.get(VBEBlockProperties.DIRECTION) == Direction.UP) return BaseBlock.FENCE.id;
-		if (block instanceof StairsBlock && state.get(VBEBlockProperties.STAIRS_PART) == StairsPart.TOP) return BaseBlock.FENCE.id;
+		Block block = state.getBlock();
+		if (block instanceof MFBWallBlock) return Block.FENCE.id;
+		if (block instanceof FenceBlock) return Block.FENCE.id;
+		if (block instanceof VBEHalfSlabBlock && state.get(VBEBlockProperties.DIRECTION) == Direction.UP) return Block.FENCE.id;
+		if (block instanceof StairsBlock && state.get(VBEBlockProperties.STAIRS_PART) == StairsPart.TOP) return Block.FENCE.id;
 		return original.call(level, x, y, z);
 	}
 }

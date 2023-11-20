@@ -9,7 +9,7 @@ import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
 import net.modificationstation.stationapi.api.client.texture.atlas.ExpandableAtlas;
 import net.modificationstation.stationapi.api.event.registry.GuiHandlerRegistryEvent;
 import net.modificationstation.stationapi.api.registry.BlockRegistry;
-import net.modificationstation.stationapi.api.registry.Identifier;
+import net.modificationstation.stationapi.api.util.Identifier;
 import paulevs.mfb.MFB;
 import paulevs.mfb.block.MFBBlocks;
 import paulevs.mfb.block.MFBFenceBlock;

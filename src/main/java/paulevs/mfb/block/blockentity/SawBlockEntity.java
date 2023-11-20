@@ -1,11 +1,11 @@
 package paulevs.mfb.block.blockentity;
 
-import net.minecraft.block.entity.BaseBlockEntity;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.io.CompoundTag;
 import net.minecraft.util.io.ListTag;
 
-public class SawBlockEntity extends BaseBlockEntity {
+public class SawBlockEntity extends BlockEntity {
 	public final ItemStack[] items = new ItemStack[3];
 	public int selectedSlot = -1;
 	

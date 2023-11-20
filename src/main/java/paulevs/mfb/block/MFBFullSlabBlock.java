@@ -2,16 +2,16 @@ package paulevs.mfb.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.level.BlockView;
-import net.modificationstation.stationapi.api.registry.Identifier;
+import net.modificationstation.stationapi.api.util.Identifier;
 import paulevs.vbe.block.VBEFullSlabBlock;
 
 public class MFBFullSlabBlock extends VBEFullSlabBlock {
-	private final BaseBlock source;
+	private final Block source;
 	private final byte meta;
 	
-	public MFBFullSlabBlock(Identifier id, BaseBlock source, byte meta) {
+	public MFBFullSlabBlock(Identifier id, Block source, byte meta) {
 		super(id, source);
 		this.source = source;
 		this.meta = meta;
@@ -49,13 +49,13 @@ public class MFBFullSlabBlock extends VBEFullSlabBlock {
 	}
 	
 	@Override
-	public int getTextureForSide(int side) {
-		return source.getTextureForSide(wrapSide(side), this.meta);
+	public int getTexture(int side) {
+		return source.getTexture(wrapSide(side), this.meta);
 	}
 	
 	@Override
-	public int getTextureForSide(int side, int meta) {
-		return source.getTextureForSide(wrapSide(side), this.meta);
+	public int getTexture(int side, int meta) {
+		return source.getTexture(wrapSide(side), this.meta);
 	}
 	
 	private int wrapSide(int side) {

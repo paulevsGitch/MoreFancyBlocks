@@ -2,7 +2,7 @@ package paulevs.mfb.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.hit.HitResult;
@@ -11,17 +11,17 @@ import net.minecraft.util.maths.Box;
 import net.minecraft.util.maths.MathHelper;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.item.ItemPlacementContext;
-import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager.Builder;
-import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
+import net.modificationstation.stationapi.api.template.block.TemplateBlock;
+import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.world.BlockStateView;
 import paulevs.vbe.utils.LevelUtil;
 
-public class MFBOctablock extends TemplateBlockBase {
-	private final BaseBlock source;
+public class MFBOctablock extends TemplateBlock {
+	private final Block source;
 	private final byte meta;
 	
-	public MFBOctablock(Identifier id, BaseBlock source, byte meta) {
+	public MFBOctablock(Identifier id, Block source, byte meta) {
 		super(id, source.material);
 		this.source = source;
 		this.meta = meta;
@@ -32,7 +32,7 @@ public class MFBOctablock extends TemplateBlockBase {
 	}
 	
 	@Override
-	public void appendProperties(Builder<BaseBlock, BlockState> builder) {
+	public void appendProperties(Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
 		builder.add(MFBBlockProperties.OCTABLOCK);
 	}
@@ -64,13 +64,13 @@ public class MFBOctablock extends TemplateBlockBase {
 	}
 	
 	@Override
-	public int getTextureForSide(int side) {
-		return source.getTextureForSide(wrapSide(side), this.meta);
+	public int getTexture(int side) {
+		return source.getTexture(wrapSide(side), this.meta);
 	}
 	
 	@Override
-	public int getTextureForSide(int side, int meta) {
-		return source.getTextureForSide(wrapSide(side), this.meta);
+	public int getTexture(int side, int meta) {
+		return source.getTexture(wrapSide(side), this.meta);
 	}
 	
 	@Override

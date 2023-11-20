@@ -2,19 +2,19 @@ package paulevs.mfb.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.level.BlockView;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.block.TemplateFence;
+import net.modificationstation.stationapi.api.template.block.TemplateFenceBlock;
+import net.modificationstation.stationapi.api.util.Identifier;
 
-public class MFBFenceBlock extends TemplateFence {
-	private final BaseBlock source;
+public class MFBFenceBlock extends TemplateFenceBlock {
+	private final Block source;
 	private final byte meta;
 	
 	public int sideTexture;
 	public int topTexture;
 	
-	public MFBFenceBlock(Identifier id, BaseBlock source, byte meta) {
+	public MFBFenceBlock(Identifier id, Block source, byte meta) {
 		super(id, source.texture);
 		this.source = source;
 		this.meta = meta;
@@ -23,7 +23,7 @@ public class MFBFenceBlock extends TemplateFence {
 		setTranslationKey(id.toString());
 		setSounds(source.sounds);
 		setHardness(source.getHardness());
-		ALLOWS_GRASS_UNDER[this.id] = true;
+		NO_AMBIENT_OCCLUSION[this.id] = true;
 	}
 	
 	@Override
@@ -43,13 +43,13 @@ public class MFBFenceBlock extends TemplateFence {
 	}
 	
 	@Override
-	public int getTextureForSide(int side) {
-		if (side < 2) return topTexture == 0 ? source.getTextureForSide(side, this.meta) : topTexture;
-		return sideTexture == 0 ? source.getTextureForSide(2, this.meta) : sideTexture;
+	public int getTexture(int side) {
+		if (side < 2) return topTexture == 0 ? source.getTexture(side, this.meta) : topTexture;
+		return sideTexture == 0 ? source.getTexture(2, this.meta) : sideTexture;
 	}
 	
 	@Override
-	public int getTextureForSide(int side, int meta) {
-		return getTextureForSide(side);
+	public int getTexture(int side, int meta) {
+		return getTexture(side);
 	}
 }

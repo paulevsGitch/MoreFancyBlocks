@@ -4,11 +4,11 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
-import net.minecraft.container.BaseContainer;
+import net.minecraft.container.Container;
 import net.minecraft.container.slot.Slot;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.BaseInventory;
+import net.minecraft.entity.living.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import paulevs.mfb.api.SawAPI;
 import paulevs.mfb.block.blockentity.SawBlockEntity;
@@ -16,7 +16,7 @@ import paulevs.mfb.item.SawBladeItem;
 
 import java.util.List;
 
-public class SawContainer extends BaseContainer {
+public class SawContainer extends Container {
 	private final SimpleInventory crafting;
 	private final SimpleInventory preview = new SimpleInventory(24, this);
 	private final Slot[] previewSlots = new Slot[25];
@@ -67,7 +67,7 @@ public class SawContainer extends BaseContainer {
 	}
 	
 	@Override
-	public void onContentsChanged(BaseInventory inventory) {
+	public void onContentsChanged(Inventory inventory) {
 		ItemStack output = crafting.getItem(2);
 		if (output == null && selectedItem != null) {
 			getSlot(2).setStack(selectedItem.copy());
@@ -117,12 +117,12 @@ public class SawContainer extends BaseContainer {
 	}
 	
 	@Override
-	public boolean canUse(PlayerBase player) {
+	public boolean canUse(PlayerEntity player) {
 		return true;
 	}
 	
 	@Override
-	public ItemStack clickSlot(int index, int button, boolean shift, PlayerBase player) {
+	public ItemStack clickSlot(int index, int button, boolean shift, PlayerEntity player) {
 		if (index == 1) {
 			ItemStack playerItem = inventory.getCursorItem();
 			if (playerItem == null || playerItem.getType() instanceof SawBladeItem) {
@@ -224,7 +224,7 @@ public class SawContainer extends BaseContainer {
 	}
 	
 	@Override
-	public void onClosed(PlayerBase player) {
+	public void onClosed(PlayerEntity player) {
 		if (player.level.isRemote) return;
 		PlayerInventory inventory = player.inventory;
 		addOrDrop(player, inventory.getCursorItem());
@@ -236,7 +236,7 @@ public class SawContainer extends BaseContainer {
 		return entity.selectedSlot;
 	}
 	
-	private void addOrDrop(PlayerBase player, ItemStack stack) {
+	private void addOrDrop(PlayerEntity player, ItemStack stack) {
 		if (stack == null) return;
 		if (!player.inventory.addStack(stack)) {
 			player.dropItem(stack);

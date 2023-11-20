@@ -4,7 +4,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.level.Level;
 import net.minecraft.util.hit.HitType;
 import net.modificationstation.stationapi.api.block.BlockState;
-import net.modificationstation.stationapi.api.registry.Identifier;
+import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.math.Direction.Axis;
 import paulevs.mfb.block.blockentity.DoubleSlabBlockEntity;
 import paulevs.vbe.block.VBEBlockProperties;

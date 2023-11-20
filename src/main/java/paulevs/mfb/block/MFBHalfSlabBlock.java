@@ -2,25 +2,23 @@ package paulevs.mfb.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.level.BlockView;
-import net.modificationstation.stationapi.api.block.BlockState;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.world.BlockStateView;
+import net.modificationstation.stationapi.api.util.Identifier;
 import paulevs.vbe.block.VBEHalfSlabBlock;
 
 public class MFBHalfSlabBlock extends VBEHalfSlabBlock {
-	private final BaseBlock source;
+	private final Block source;
 	private final byte meta;
 	
-	public MFBHalfSlabBlock(Identifier id, BaseBlock source, byte meta) {
+	public MFBHalfSlabBlock(Identifier id, Block source, byte meta) {
 		super(id, source);
 		this.source = source;
 		this.meta = meta;
 		setLightOpacity(Math.min(LIGHT_OPACITY[source.id], LIGHT_OPACITY[this.id]));
 		EMITTANCE[this.id] = EMITTANCE[source.id];
 		setSounds(source.sounds);
-		ALLOWS_GRASS_UNDER[this.id] = true;
+		NO_AMBIENT_OCCLUSION[this.id] = true;
 	}
 	
 	@Override
@@ -40,13 +38,13 @@ public class MFBHalfSlabBlock extends VBEHalfSlabBlock {
 	}
 	
 	@Override
-	public int getTextureForSide(int side) {
-		return source.getTextureForSide(wrapSide(side), this.meta);
+	public int getTexture(int side) {
+		return source.getTexture(wrapSide(side), this.meta);
 	}
 	
 	@Override
-	public int getTextureForSide(int side, int meta) {
-		return source.getTextureForSide(wrapSide(side), this.meta);
+	public int getTexture(int side, int meta) {
+		return source.getTexture(wrapSide(side), this.meta);
 	}
 	
 	private int wrapSide(int side) {
