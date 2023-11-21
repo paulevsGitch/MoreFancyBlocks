@@ -3,6 +3,9 @@ package paulevs.mfb.block;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
+import net.minecraft.entity.living.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.hit.HitResult;
@@ -14,7 +17,9 @@ import net.modificationstation.stationapi.api.item.ItemPlacementContext;
 import net.modificationstation.stationapi.api.state.StateManager.Builder;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.world.BlockStateView;
+import paulevs.mfb.block.blockentity.FullOctaBlockEntity;
 import paulevs.vbe.utils.LevelUtil;
 
 public class MFBOctablock extends TemplateBlock {
@@ -29,6 +34,7 @@ public class MFBOctablock extends TemplateBlock {
 		EMITTANCE[this.id] = EMITTANCE[source.id];
 		setSounds(source.sounds);
 		setTranslationKey(id.toString());
+		NO_AMBIENT_OCCLUSION[this.id] = true;
 	}
 	
 	@Override
@@ -77,15 +83,7 @@ public class MFBOctablock extends TemplateBlock {
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		if (context.getPlayer() == null) return getDefaultState();
 		BlockPos pos = context.getBlockPos();
-		HitResult hit = LevelUtil.raycast(context.getWorld(), context.getPlayer());
-		float dx = (float) (hit.pos.x - pos.getX());
-		float dy = (float) (hit.pos.y - pos.getY());
-		float dz = (float) (hit.pos.z - pos.getZ());
-		int octablock = MathHelper.floor(dx * 2 + 0.5F);
-		octablock += MathHelper.floor(dy * 2 + 0.5F) * 3;
-		octablock += MathHelper.floor(dz * 2 + 0.5F) * 9;
-		octablock = net.modificationstation.stationapi.api.util.math.MathHelper.clamp(octablock, 0, 26);
-		return getDefaultState().with(MFBBlockProperties.OCTABLOCK, octablock);
+		return getState(context.getWorld(), context.getPlayer(), pos.x, pos.y, pos.z);
 	}
 	
 	// Item Bounding Box
@@ -111,7 +109,7 @@ public class MFBOctablock extends TemplateBlock {
 	}
 	
 	private void updateBox(BlockState state) {
-		if (!state.isOf(this)) return;
+		if (!(state.getBlock() instanceof MFBOctablock)) return;
 		int octablock = state.get(MFBBlockProperties.OCTABLOCK);
 		minX = (float) (octablock % 3) * 0.25F;
 		minY = (float) ((octablock / 3) % 3) * 0.25F;
@@ -123,5 +121,49 @@ public class MFBOctablock extends TemplateBlock {
 	
 	private int wrapSide(int side) {
 		return Math.min(side, 2);
+	}
+	
+	@Override
+	public boolean canUse(Level level, int x, int y, int z, PlayerEntity player) {
+		ItemStack stack = player.inventory.getHeldItem();
+		if (stack == null || !(stack.getType() instanceof BlockItem item)) return false;
+		if (!(item.getBlock() instanceof MFBOctablock block)) return false;
+		
+		BlockState state = level.getBlockState(x, y, z);
+		if (state.getBlock() instanceof MFBOctablock) {
+			level.setBlockState(x, y, z, MFBBlocks.FULL_OCTABLOCK.getDefaultState());
+			FullOctaBlockEntity entity = (FullOctaBlockEntity) level.getBlockEntity(x, y, z);
+			entity.setOctablock(state);
+			
+			BlockState state2 = block.getState(level, player, x, y, z);
+			if (!entity.setOctablock(state2)) {
+				level.setBlockState(x, y, z, state);
+				level.removeBlockEntity(x, y, z);
+			}
+			else {
+				level.updateBlock(x, y, z);
+			}
+		}
+		
+		return true;
+	}
+	
+	protected BlockState getState(Level level, PlayerEntity player, int x, int y, int z) {
+		HitResult hit = LevelUtil.raycast(level, player);
+		Direction dir = Direction.byId(hit.facing);
+		float dx = (float) (hit.pos.x - x + dir.getOffsetX() * 0.25F);
+		float dy = (float) (hit.pos.y - y + dir.getOffsetY() * 0.25F);
+		float dz = (float) (hit.pos.z - z + dir.getOffsetZ() * 0.25F);
+		return getDefaultState().with(MFBBlockProperties.OCTABLOCK, getOctaProperty(dx, dy, dz));
+	}
+	
+	public static int getOctaProperty(float dx, float dy, float dz) {
+		int octablock = clamp(MathHelper.floor(dx * 3));
+		octablock += clamp(MathHelper.floor(dy * 3)) * 3;
+		return octablock + clamp(MathHelper.floor(dz * 3)) * 9;
+	}
+	
+	private static int clamp(int value) {
+		return net.modificationstation.stationapi.api.util.math.MathHelper.clamp(value, 0, 2);
 	}
 }

@@ -18,6 +18,7 @@ import paulevs.mfb.api.SawAPI;
 import paulevs.mfb.block.MFBBlocks;
 import paulevs.mfb.block.SawBlock;
 import paulevs.mfb.block.blockentity.DoubleSlabBlockEntity;
+import paulevs.mfb.block.blockentity.FullOctaBlockEntity;
 import paulevs.mfb.block.blockentity.SawBlockEntity;
 import paulevs.mfb.item.MFBItems;
 
@@ -38,6 +39,7 @@ public class CommonListener {
 	private void onTileEntityRegister(BlockEntityRegisterEvent event) {
 		event.register(SawBlockEntity.class, "mfb:saw");
 		event.register(DoubleSlabBlockEntity.class, "mfb:double_slab");
+		event.register(FullOctaBlockEntity.class, "mfb:full_octablock");
 	}
 	
 	@EventListener

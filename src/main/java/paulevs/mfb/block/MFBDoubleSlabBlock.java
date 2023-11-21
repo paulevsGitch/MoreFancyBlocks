@@ -40,6 +40,7 @@ public class MFBDoubleSlabBlock extends VBEFullSlabBlock {
 	@Override
 	public void beforeBlockRemoved(Level level, int x, int y, int z) {
 		super.beforeBlockRemoved(level, x, y, z);
+		if (hit == null) return;
 		blockState = level.getBlockState(x, y, z);
 		Axis axis = blockState.get(VBEBlockProperties.AXIS);
 		switch (axis) {

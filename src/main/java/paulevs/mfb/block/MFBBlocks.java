@@ -35,16 +35,19 @@ public class MFBBlocks {
 	public static final Block WOOD_SAW = make("wood_saw", SawBlock::new).setSounds(Block.WOOD_SOUNDS);
 	// public static final Block STONE_SAW = make("stone_saw", SawBlock::new).setSounds(Block.STONE_SOUNDS);
 	public static final Block DOUBLE_SLAB = makeNI("double_slab", MFBDoubleSlabBlock::new);
+	public static final Block FULL_OCTABLOCK = makeNI("full_octablock", MFBFullOctablock::new);
 	
 	private static <B extends Block> B make(String name, Function<Identifier, B> constructor) {
-		B block = makeNI(name, constructor);
-		BLOCKS_WITH_ITEMS.add(block);
+		Identifier id = MFB.id(name);
+		B block = constructor.apply(id);
+		block.setTranslationKey(id.toString());
 		return block;
 	}
 	
 	private static <B extends Block> B makeNI(String name, Function<Identifier, B> constructor) {
 		Identifier id = MFB.id(name);
 		B block = constructor.apply(id);
+		block.disableAutoItemRegistration();
 		block.setTranslationKey(id.toString());
 		return block;
 	}

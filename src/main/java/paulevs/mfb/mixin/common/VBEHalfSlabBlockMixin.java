@@ -49,7 +49,6 @@ public class VBEHalfSlabBlockMixin {
 		return MFBBlocks.DOUBLE_SLAB.getDefaultState();
 	}
 	
-	@SuppressWarnings("InvalidInjectorMethodSignature")
 	@Inject(method = "canUse", at = @At(
 		value = "INVOKE",
 		target = "Lnet/minecraft/level/Level;updateBlock(III)V",
