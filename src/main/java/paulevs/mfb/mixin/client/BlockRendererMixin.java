@@ -85,7 +85,7 @@ public abstract class BlockRendererMixin {
 		mfb_renderBox(block, meta, 0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
 		mfb_renderBox(block, meta, 0.3125F, 0.0F, 0.0F, 0.6875F, 0.8125F, 1.0F);
 		
-		tessellator.draw();
+		tessellator.render();
 		
 		GL11.glPopMatrix();
 	}

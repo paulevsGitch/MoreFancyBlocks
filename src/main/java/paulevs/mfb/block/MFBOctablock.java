@@ -3,6 +3,7 @@ package paulevs.mfb.block;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSounds;
 import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
@@ -135,12 +136,20 @@ public class MFBOctablock extends TemplateBlock {
 			FullOctaBlockEntity entity = (FullOctaBlockEntity) level.getBlockEntity(x, y, z);
 			entity.setOctablock(state);
 			
+			BlockSounds sound = state.getBlock().sounds;
+			level.playSound(x + 0.5, y + 0.5, z + 0.5, sound.getWalkSound(), sound.getVolume(), sound.getPitch());
+			
 			BlockState state2 = block.getState(level, player, x, y, z);
 			if (!entity.setOctablock(state2)) {
 				level.setBlockState(x, y, z, state);
 				level.removeBlockEntity(x, y, z);
 			}
 			else {
+				int light = entity.getMaxLight();
+				level.removeBlockEntity(x, y, z);
+				level.setBlockState(x, y, z, MFBBlocks.FULL_OCTABLOCK.getDefaultState().with(MFBBlockProperties.LIGHT, light));
+				entity.validate();
+				level.setBlockEntity(x, y, z, entity);
 				level.updateBlock(x, y, z);
 			}
 		}

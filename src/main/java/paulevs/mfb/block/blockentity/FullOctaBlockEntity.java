@@ -8,6 +8,7 @@ import net.minecraft.util.io.StringTag;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.registry.BlockRegistry;
 import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.impl.block.StationFlatteningBlockInternal;
 import paulevs.mfb.block.MFBBlockProperties;
 
 public class FullOctaBlockEntity extends BlockEntity {
@@ -45,7 +46,44 @@ public class FullOctaBlockEntity extends BlockEntity {
 	public boolean setOctablock(BlockState state) {
 		int index = state.get(MFBBlockProperties.OCTABLOCK);
 		if (states[index] != null) return false;
+		
+		int px = index % 3;
+		int py = (index / 3) % 3;
+		int pz = index / 9;
+		
+		int x1 = Math.max(px - 1, 0);
+		int y1 = Math.max(py - 1, 0);
+		int z1 = Math.max(pz - 1, 0);
+		
+		int x2 = Math.min(px + 1, 2);
+		int y2 = Math.min(py + 1, 2);
+		int z2 = Math.min(pz + 1, 2);
+		
+		for (int z = z1; z <= z2; z++) {
+			int iz = z * 9;
+			for (int y = y1; y <= y2; y++) {
+				int iyz = iz + y * 3;
+				for (int x = x1; x <= x2; x++) {
+					int ixyz = iyz + x;
+					if (states[ixyz] != null) return false;
+				}
+			}
+		}
+		
+		/*int d = index % 3;
+		if (d > 0 && states[index - 1] != null) return false;
+		if (d < 2 && states[index + 1] != null) return false;
+		
+		d = (index / 3) % 3;
+		if (d > 0 && states[index - 3] != null) return false;
+		if (d < 2 && states[index + 3] != null) return false;
+		
+		d = index / 9;
+		if (d > 0 && states[index - 9] != null) return false;
+		if (d < 2 && states[index + 9] != null) return false;*/
+		
 		states[index] = state;
+		
 		return true;
 	}
 	
@@ -65,5 +103,15 @@ public class FullOctaBlockEntity extends BlockEntity {
 			}
 		}
 		return last;
+	}
+	
+	public int getMaxLight() {
+		int light = 0;
+		for (BlockState state : states) {
+			if (state == null) continue;
+			StationFlatteningBlockInternal internal = (StationFlatteningBlockInternal) state.getBlock();
+			light = Math.max(light, internal.stationapi_getLuminanceProvider().applyAsInt(state));
+		}
+		return light;
 	}
 }

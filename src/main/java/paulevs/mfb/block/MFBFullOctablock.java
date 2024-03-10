@@ -3,6 +3,8 @@ package paulevs.mfb.block;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockSounds;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -17,6 +19,7 @@ import net.minecraft.util.maths.Box;
 import net.minecraft.util.maths.Vec3D;
 import net.modificationstation.stationapi.api.block.BeforeBlockRemoved;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.state.StateManager.Builder;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.math.Direction;
@@ -36,6 +39,13 @@ public class MFBFullOctablock extends TemplateBlockWithEntity implements CustomB
 		setLightOpacity(0);
 		setTranslationKey(id.toString());
 		NO_AMBIENT_OCCLUSION[this.id] = true;
+		setDefaultState(getDefaultState().with(MFBBlockProperties.LIGHT, 0));
+	}
+	
+	@Override
+	public void appendProperties(Builder<Block, BlockState> builder) {
+		super.appendProperties(builder);
+		builder.add(MFBBlockProperties.LIGHT);
 	}
 	
 	@Override
@@ -198,11 +208,22 @@ public class MFBFullOctablock extends TemplateBlockWithEntity implements CustomB
 		
 		BlockState state = level.getBlockState(x, y, z);
 		if (state.getBlock() instanceof MFBFullOctablock) {
-			state = block.getState(level, player, x, y, z);
+			BlockState octablock = block.getState(level, player, x, y, z);
 			FullOctaBlockEntity entity = (FullOctaBlockEntity) level.getBlockEntity(x, y, z);
-			if (!entity.setOctablock(state)) {
-				return false;
+			
+			if (!entity.setOctablock(octablock)) return false;
+			
+			BlockSounds sound = octablock.getBlock().sounds;
+			level.playSound(x + 0.5, y + 0.5, z + 0.5, sound.getWalkSound(), sound.getVolume(), sound.getPitch());
+			
+			int light = entity.getMaxLight();
+			if (state.get(MFBBlockProperties.LIGHT) != light) {
+				level.removeBlockEntity(x, y, z);
+				level.setBlockState(x, y, z, state.with(MFBBlockProperties.LIGHT, light));
+				entity.validate();
+				level.setBlockEntity(x, y, z, entity);
 			}
+			
 			level.updateBlock(x, y, z);
 		}
 		
