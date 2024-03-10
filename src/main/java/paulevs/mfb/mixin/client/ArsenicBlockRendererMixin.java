@@ -15,9 +15,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import paulevs.mfb.client.render.CustomBlockRenderer;
 
-@Mixin(value = ArsenicBlockRenderer.class, remap = false)
+@Mixin(ArsenicBlockRenderer.class)
 public abstract class ArsenicBlockRendererMixin {
-	@Shadow @Final private BlockRenderManagerAccessor blockRendererAccessor;
+	@Shadow(remap = false) @Final private BlockRenderManagerAccessor blockRendererAccessor;
 	
 	@Inject(method = "renderWorld", at = @At("HEAD"), cancellable = true)
 	private void mfb_renderDoubleSlab(Block block, int x, int y, int z, CallbackInfoReturnable<Boolean> original, CallbackInfo info) {

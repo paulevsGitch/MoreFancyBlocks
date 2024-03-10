@@ -21,7 +21,7 @@ import paulevs.mfb.block.blockentity.DoubleSlabBlockEntity;
 import paulevs.vbe.block.VBEBlockProperties;
 import paulevs.vbe.block.VBEHalfSlabBlock;
 
-@Mixin(value = VBEHalfSlabBlock.class, remap = false)
+@Mixin(VBEHalfSlabBlock.class)
 public class VBEHalfSlabBlockMixin {
 	@WrapOperation(method = "canUse", at = @At(
 		value = "INVOKE",
