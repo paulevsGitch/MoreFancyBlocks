@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import paulevs.mfb.block.blockentity.DoubleSlabBlockEntity;
 
-@Mixin(value = FlattenedChunk.class, remap = false)
+@Mixin(FlattenedChunk.class)
 public abstract class FlattenedChunkMixin extends Chunk {
 	public FlattenedChunkMixin(Level arg, int i, int j) {
 		super(arg, i, j);
