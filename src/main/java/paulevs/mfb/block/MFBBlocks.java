@@ -77,12 +77,18 @@ public class MFBBlocks {
 		blocks.sort((p1, p2) -> {
 			Block b1 = p1.getSecond();
 			Block b2 = p2.getSecond();
-			if (b1.material == b2.material) {
+			String n1 = b1.material.getClass().getName();
+			String n2 = b2.material.getClass().getName();
+			int a = p1.getFirst().compareTo(p2.getFirst());
+			int b = n1.compareTo(n2);
+			return (b << 2) + a;
+			//return p1.getFirst().compareTo(p2.getFirst());
+			/*if (b1.material == b2.material) {
 				return p1.getFirst().compareTo(p2.getFirst());
 			}
 			String n1 = b1.material.getClass().getName();
 			String n2 = b2.material.getClass().getName();
-			return n1.compareTo(n2);
+			return n1.compareTo(n2);*/
 		});
 		
 		blocks.forEach((pair) -> {
