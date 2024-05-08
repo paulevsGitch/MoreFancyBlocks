@@ -61,7 +61,7 @@ public class MFBBlocks {
 			if (block instanceof SandBlock) return;
 			if (block instanceof VBEFullSlabBlock) return;
 			if (block instanceof StoneSlabBlock) return;
-			if (Block.HAS_TILE_ENTITY[block.id]) return;
+			if (Block.HAS_BLOCK_ENTITY[block.id]) return;
 			if (block == Block.LEAVES) return;
 			if (block == Block.LOG) return;
 			if (block == Block.REDSTONE_ORE_LIT) return;
@@ -107,7 +107,7 @@ public class MFBBlocks {
 				if (block instanceof WoolBlock) name += "." + DyeItem.NAMES[WoolBlock.getColor(meta)];
 				name = name + ".name";
 				
-				if (block == Block.WOOD) STAIRS.add(Block.WOOD_STAIRS);
+				if (block == Block.PLANKS) STAIRS.add(Block.WOOD_STAIRS);
 				else if (block == Block.COBBLESTONE) STAIRS.add(Block.COBBLESTONE_STAIRS);
 				else {
 					Identifier stairsID = MFB.id(addMeta(id.path + "_stairs", meta, useMeta));
@@ -118,7 +118,7 @@ public class MFBBlocks {
 					SawAPI.addRecipe(block, meta, stairs, 0, 1);
 				}
 				
-				if (block == Block.WOOD) SLABS.add(VBEBlocks.OAK_SLAB_HALF);
+				if (block == Block.PLANKS) SLABS.add(VBEBlocks.OAK_SLAB_HALF);
 				else if (block == Block.COBBLESTONE) {
 					SLABS.add(VBEBlocks.COBBLESTONE_SLAB_HALF);
 					SLABS.add(VBEBlocks.STONE_SLAB_HALF);
@@ -140,7 +140,7 @@ public class MFBBlocks {
 					SawAPI.addRecipe(block, meta, halfSlabBlock, 0, 2);
 				}
 				
-				if (block == Block.WOOD) FENCES.add(Block.FENCE);
+				if (block == Block.PLANKS) FENCES.add(Block.FENCE);
 				else {
 					Identifier fenceID = MFB.id(addMeta(id.path + "_fence", meta, useMeta));
 					MFBFenceBlock fence = new MFBFenceBlock(fenceID, block, meta);

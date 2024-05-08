@@ -57,12 +57,12 @@ public class CommonListener {
 	private void onRecipesRegister(AfterBlockAndItemRegisterEvent event) {
 		SawAPI.loadPromisedRecipes();
 		
-		SawAPI.addRecipe(new ItemStack(Block.WOOD), new ItemStack(Block.STONE_SLAB, 2, 2));
-		SawAPI.addRecipe(new ItemStack(Block.WOOD), new ItemStack(Block.WOODEN_PRESSURE_PLATE));
-		SawAPI.addRecipe(new ItemStack(Block.WOOD), new ItemStack(Block.WOOD_STAIRS));
-		SawAPI.addRecipe(new ItemStack(Block.WOOD), new ItemStack(Block.FENCE));
+		SawAPI.addRecipe(new ItemStack(Block.PLANKS), new ItemStack(Block.STONE_SLAB, 2, 2));
+		SawAPI.addRecipe(new ItemStack(Block.PLANKS), new ItemStack(Block.WOODEN_PRESSURE_PLATE));
+		SawAPI.addRecipe(new ItemStack(Block.PLANKS), new ItemStack(Block.WOOD_STAIRS));
+		SawAPI.addRecipe(new ItemStack(Block.PLANKS), new ItemStack(Block.FENCE));
 		
-		SawAPI.addRecipe(new ItemStack(Block.LOG), new ItemStack(Block.WOOD, 6));
+		SawAPI.addRecipe(new ItemStack(Block.LOG), new ItemStack(Block.PLANKS, 6));
 		
 		SawAPI.addRecipe(new ItemStack(Block.COBBLESTONE), new ItemStack(Block.STONE_SLAB, 2, 3));
 		SawAPI.addRecipe(new ItemStack(Block.COBBLESTONE), new ItemStack(Block.COBBLESTONE_STAIRS));

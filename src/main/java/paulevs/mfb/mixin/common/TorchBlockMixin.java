@@ -20,7 +20,7 @@ import paulevs.vbe.block.VBEHalfSlabBlock;
 public class TorchBlockMixin {
 	@WrapOperation(
 		method = "isFloorSupport",
-		at = @At(value = "INVOKE", target = "Lnet/minecraft/level/Level;getBlockId(III)I")
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/level/Level;getBlockID(III)I")
 	)
 	private int mfb_torchSupport(Level level, int x, int y, int z, Operation<Integer> original) {
 		BlockState state = level.getBlockState(x, y, z);

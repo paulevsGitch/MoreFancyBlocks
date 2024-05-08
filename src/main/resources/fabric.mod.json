@@ -38,6 +38,7 @@
 	"depends": {
 		"minecraft": "1.0.0-beta.7.3",
 		"vbe": ">=0.1.4",
-		"stationapi": "*"
+		"stationapi": ">=2.0-alpha.2",
+		"fabricloader": ">=0.15.6-babric.1"
 	}
 }

@@ -12,7 +12,7 @@ import net.minecraft.level.Level;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.maths.BlockPos;
 import net.minecraft.util.maths.Box;
-import net.minecraft.util.maths.MathHelper;
+import net.minecraft.util.maths.MCMath;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.item.ItemPlacementContext;
 import net.modificationstation.stationapi.api.state.StateManager.Builder;
@@ -167,9 +167,9 @@ public class MFBOctablock extends TemplateBlock {
 	}
 	
 	public static int getOctaProperty(float dx, float dy, float dz) {
-		int octablock = clamp(MathHelper.floor(dx * 3));
-		octablock += clamp(MathHelper.floor(dy * 3)) * 3;
-		return octablock + clamp(MathHelper.floor(dz * 3)) * 9;
+		int octablock = clamp(MCMath.floor(dx * 3));
+		octablock += clamp(MCMath.floor(dy * 3)) * 3;
+		return octablock + clamp(MCMath.floor(dz * 3)) * 9;
 	}
 	
 	private static int clamp(int value) {
