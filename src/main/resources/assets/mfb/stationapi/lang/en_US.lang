@@ -1,13 +1,13 @@
-tab.main_tab.name=More Fancy Blocks
-tab.stairs_tab.name=MFB Stairs
-tab.slabs_tab.name=MFB Slabs
-tab.panels_tab.name=MFB Panels
-tab.fences_tab.name=MFB Fences
-tab.walls_tab.name=MFB Walls
-tab.octablocks_tab.name=MFB Octablocks
+tab.mfb.main_tab.name=More Fancy Blocks
+tab.mfb.stairs_tab.name=MFB Stairs
+tab.mfb.slabs_tab.name=MFB Slabs
+tab.mfb.panels_tab.name=MFB Panels
+tab.mfb.fences_tab.name=MFB Fences
+tab.mfb.walls_tab.name=MFB Walls
+tab.mfb.octablocks_tab.name=MFB Octablocks
 
-tile.wood_saw.name=Wood Saw
+tile.mfb.wood_saw.name=Wood Saw
 
-item.stone_saw_blade.name=Stone Saw Blade
-item.iron_saw_blade.name=Iron Saw Blade
-item.diamond_saw_blade.name=Diamond Saw Blade
+item.mfb.stone_saw_blade.name=Stone Saw Blade
+item.mfb.iron_saw_blade.name=Iron Saw Blade
+item.mfb.diamond_saw_blade.name=Diamond Saw Blade
